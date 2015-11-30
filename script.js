@@ -9,16 +9,25 @@ function printXML() {
   console.log("errors: " + tree.documentElement.getAttribute("errors"));
   console.log("time: " + tree.documentElement.getAttribute("time"));*/
 
+  $.ajaxSetup({async: true});
+  var slug = "HPI-BP2015H%2FSWT-Demo"
+
+  // get builds
   jQuery.ajax({
     type: "GET",
+    headers: {
+      "Travis-API-Version":"3"
+    },
     dataType: "json",
-    url: "http://api.travis-ci.org/HPI-BP2015H/SWT-Demo",
+    url: "https://api.travis-ci.org/v3/repo/" + slug + "/builds",
     success: function (data, status, jqXHR) {
-      console.log("SUCCESS");
-      console.log(data)
+      console.log("[DONE] get builds");
+      console.log(data);
     },
     error: function (jqXHR, status) {
-      console.log("ERROR");
+      console.log("[FAILED] get builds");
+      console.log(jqXHR);
+      console.log(status);
     }
   });
 }
