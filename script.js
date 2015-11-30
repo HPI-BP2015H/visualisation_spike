@@ -22,7 +22,7 @@ function printXML() {
     url: "https://api.travis-ci.org/v3/repo/" + slug + "/builds",
     success: function (data, status, jqXHR) {
       console.log("[DONE] get builds");
-      console.log(data);
+      processBuilds(data.builds);
     },
     error: function (jqXHR, status) {
       console.log("[FAILED] get builds");
@@ -30,4 +30,27 @@ function printXML() {
       console.log(status);
     }
   });
+}
+
+function processBuilds(builds) {
+  for(var i = 0; i < builds.length; i++) {
+    for(var j = 0; j < builds[i].jobs.length; j++) {
+      jQuery.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "http://api.travis-ci.org/jobs/" + builds[i].jobs[j].id,
+        success: function (data, status, jqXHR) {
+          console.log("[DONE] get logs");
+          document.getElementsByTagName("body")[0].innerHTML += data.id + ":<br/><br/>";
+          document.getElementsByTagName("body")[0].innerHTML += data.log;
+          document.getElementsByTagName("body")[0].innerHTML += "<br/><br/><br/>";
+        },
+        error: function (jqXHR, status) {
+          console.log("[FAILED] get logs");
+          console.log(jqXHR);
+          console.log(status);
+        }
+      });
+    }
+  }
 }
