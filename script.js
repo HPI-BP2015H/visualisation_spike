@@ -11,7 +11,7 @@ function generateCharts() {
     [    "1",  errors,  fails, passes]
   ];
 
-  generateStackedAreaChart();
+  generateStackedAreaChart(stackedAreaData);
   generateBubbleChart();
 }
 
@@ -83,8 +83,6 @@ function generateBubbleChart(){
         var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
         chart.draw(data, options);
       }
-
-
 }
 
 function printXML() {
