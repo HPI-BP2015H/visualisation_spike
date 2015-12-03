@@ -2,25 +2,33 @@ function generateCharts() {
   var mockXML = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
   var mockParser = new DOMParser();
   var mockDOM = mockParser.parseFromString(mockXML, "text/xml");
-  console.log(mockDOM.documentElement.nodeName);
+  var tests  = parseInt(mockDOM.documentElement.getAttribute("tests"));
+  var fails  = parseInt(mockDOM.documentElement.getAttribute("failures"));
+  var errors = parseInt(mockDOM.documentElement.getAttribute("errors"));
+  var passes = tests - fails;
+  var stackedAreaData = [
+    ["Build", "Error", "Fail", "Pass"],
+    [    "1",  errors,  fails, passes]
+  ];
 
-  generateStackedAreaChart();
+  generateStackedAreaChart(stackedAreaData);
 }
 
-function generateStackedAreaChart() {
+function generateStackedAreaChart(dataArray) {
   // Just a mock-up right now.
   google.load("visualization", "1.0", {packages:["corechart"]});
   google.setOnLoadCallback(function() {
     var container = document.getElementById('stackedAreaChart');
     var chart = new google.visualization.AreaChart(container);
-    var data = google.visualization.arrayToDataTable([
-      ["Build", "Fail", "Pass"],
-      [    "1",      7,     83],
-      [    "2",      8,     82],
-      [    "3",      0,     90],
-      [    "4",     15,     90],
-      [    "5",      7,     98]
-    ]);
+    /*var data = google.visualization.arrayToDataTable([
+      ["Build", "Error", "Fail", "Pass"],
+      [    "1",       5,      7,     83],
+      [    "2",       5,      8,     82],
+      [    "3",       8,      0,     90],
+      [    "4",      10,     15,     90],
+      [    "5",       2,      7,     98]
+    ]);*/
+    var data = new google.visualization.arrayToDataTable(dataArray);
     var options = {
       isStacked: true,
       height: 400,
@@ -36,6 +44,7 @@ function generateStackedAreaChart() {
       },
       series: [
         {color: 'red', visibleInLegend: true},
+        {color: 'yellow', visibleInLegend: true},
         {color: 'green', visibleInLegend: true}
       ]
     };
