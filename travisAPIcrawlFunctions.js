@@ -75,4 +75,23 @@ function getAllCommitsWithDate(){
 
     return weekday[aDateInt];
 
-  };
+}
+
+function dateToHalfHours(date) {
+  var hour = date.getHours()-1;
+  var minute = date.getMinutes();
+
+  if(minute >= 15 && minute < 45) {
+    hour += 0.5;
+  } else {
+    if(minute >= 45) {
+      hour += 1.0;
+    }
+  }
+
+  if(hour < 0) {
+    hour = hour + 24;
+  }
+
+  return hour.toFixed(1);
+}
