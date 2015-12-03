@@ -1,15 +1,22 @@
 function generateCharts() {
-  var mockXML = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
-  var mockParser = new DOMParser();
-  var mockDOM = mockParser.parseFromString(mockXML, "text/xml");
-  var tests  = parseInt(mockDOM.documentElement.getAttribute("tests"));
-  var fails  = parseInt(mockDOM.documentElement.getAttribute("failures"));
-  var errors = parseInt(mockDOM.documentElement.getAttribute("errors"));
-  var passes = tests - fails;
-  var stackedAreaData = [
-    ["Build", "Error", "Fail", "Pass"],
-    [    "1",  errors,  fails, passes]
+  var mockXMLs = [
+    '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>',
+    '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="2" failures="1" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
   ];
+  var stackedAreaData = [
+    ["Build", "Error", "Fail", "Pass"]
+  ];
+
+  var mockParser = new DOMParser();
+
+  for(var i = 0; i < mockXMLs.length; i++) {
+    var mockDOM = mockParser.parseFromString(mockXMLs[i], "text/xml");
+    var tests  = parseInt(mockDOM.documentElement.getAttribute("tests"));
+    var fails  = parseInt(mockDOM.documentElement.getAttribute("failures"));
+    var errors = parseInt(mockDOM.documentElement.getAttribute("errors"));
+    var passes = tests - fails;
+    stackedAreaData.push([(i+1).toString(), errors, fails, passes]);
+  }
 
   generateStackedAreaChart(stackedAreaData);
   generateBubbleChart();
