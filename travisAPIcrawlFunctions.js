@@ -29,7 +29,7 @@ function getAllCommitsWithDate(){
   var time = null;
   var isFailure = null;
   for(var i = 0; i < builds.length; i++) {
-    time = 12.5;
+    time = dateToHalfHours(new Date(builds[i].commit.committed_at));
     weekday = new Date(builds[i].commit.committed_at).getDay();
     isFailure = true;
     var n = dateAlreadyInArray(array, time, weekday);
@@ -93,5 +93,5 @@ function dateToHalfHours(date) {
     hour = hour + 24;
   }
 
-  return hour.toFixed(1);
+  return hour;
 }
