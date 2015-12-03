@@ -66,16 +66,18 @@ function generateBubbleChart(){
 
       function drawSeriesChart() {
 
-        var data = google.visualization.arrayToDataTable([
-          ['ID',    'time', 'Weekday', 'numberOfCommits',     'Population'],
-          ['',    123456,              2,      'North America',  33739900],
-        ]);
+        /*var data = google.visualization.arrayToDataTable([
+          ['ID',    'time', 'Weekday', 'numberOfCommits',     'commitID'],
+          ['',    123456,              2,      3,  33739900],
+        ]);*/
+        var data = google.visualization.arrayToDataTable(getAllCommitsWithDate());
 
         var options = {
           title: 'Correlation between life expectancy, fertility rate and population of some world countries (2010)',
           hAxis: {title: 'Time'},
           vAxis: {title: 'Weekday'},
-          bubble: {textStyle: {fontSize: 11}}
+          bubble: {textStyle: {fontSize: 11}},
+          colorAxis: {colors: ['green', 'red']}
         };
 
         var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
