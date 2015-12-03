@@ -1,6 +1,11 @@
 
 
 function generateCharts() {
+  var mockXML = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
+  var mockParser = new DOMParser();
+  var mockDOM = mockParser.parseFromString(mockXML, "text/xml");
+  console.log(mockDOM.documentElement.nodeName);
+
   generateStackedAreaChart();
   generateBubbleChart();
 }
@@ -23,8 +28,7 @@ function generateStackedAreaChart() {
       isStacked: true,
       height: 400,
       legend: {
-        position: "top",
-        maxLines: 3
+        position: "top"
       },
       hAxis: {
         title: "Builds"
@@ -32,7 +36,11 @@ function generateStackedAreaChart() {
       vAxis: {
         title: "Tests",
         minValue: 0
-      }
+      },
+      series: [
+        {color: 'red', visibleInLegend: true},
+        {color: 'green', visibleInLegend: true}
+      ]
     };
     chart.draw(data, options);
   });
