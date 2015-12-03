@@ -83,8 +83,7 @@ function generateBubbleChart(){
 
 
 
-function printXML() {
-  var builds = getXML();
+function printXML(builds) {
   for(var i = 0; i < builds.length; i++) {
     for(var j = 0; j < builds[i].jobs.length; j++) {
       var target = "https://api.travis-ci.org/jobs/" + builds[i].jobs[j].id + "/log.txt?deansi=true";
