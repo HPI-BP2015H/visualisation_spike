@@ -20,4 +20,8 @@ function getXML() {
       console.log(status);
     }
   });
+};
+
+function getAuthorOf(commit){
+  test = 'test';
 }
