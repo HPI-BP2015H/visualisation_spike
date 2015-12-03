@@ -1,8 +1,7 @@
-function getXML() {
-  $.ajaxSetup({async: true});
-  var slug = "HPI-BP2015H%2FSWT-Demo"
-  var helper = null;
+function getBuilds() {
+  $.ajaxSetup({async: false});
   // get builds
+  var helper = null;
   jQuery.ajax({
     type: "GET",
     headers: {
@@ -12,7 +11,7 @@ function getXML() {
     url: "https://api.travis-ci.org/v3/repo/" + slug + "/builds",
     success: function (data, status, jqXHR) {
       console.log("[DONE] get builds");
-      printXML(data.builds);
+      helper = data.builds;
     },
     error: function (jqXHR, status) {
       console.log("[FAILED] get builds");
@@ -20,8 +19,10 @@ function getXML() {
       console.log(status);
     }
   });
+  return helper;
 };
 
-function getAuthorOf(commit){
-  test = 'test';
+function getAllCommitsWithDate(){
+  var builds = getBuilds();
+  console.log(builds);
 }
