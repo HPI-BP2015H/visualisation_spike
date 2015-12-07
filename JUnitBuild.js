@@ -5,9 +5,9 @@ var JUnitBuild = function(id) {
   this.id = id;
 
   // Retrieve values via REST API.
-  var commitTime    = getCommitTime();
-  var committerName = getCommitterName();
-  var status        = getStatus();
+  this.commitTime    = getCommitTime();
+  this.committerName = getCommitterName();
+  this.status        = getStatus();
 
   // Retrieve and parse JUnitXML.
   var jUnitXML = getXML();
@@ -15,33 +15,33 @@ var JUnitBuild = function(id) {
   var jDOM     = jParser.parseFromString(jUnitXML, "text/xml");
 
   // Generate values from JUnitXML.
-  var time          = getBuildTime(jDOM);
-  var testcaseCount = getTestcaseCount(jDOM);
-  var failCount     = getFailCount(jDOM);
-  var passCount     = getPassCount(jDOM);
-  var errorCount    = getErrorCount(jDOM);
+  this.time          = getBuildTime(jDOM);
+  this.testcaseCount = getTestcaseCount(jDOM);
+  this.failCount     = getFailCount(jDOM);
+  this.passCount     = getPassCount(jDOM);
+  this.errorCount    = getErrorCount(jDOM);
 
   /*
    * TODO:
-   * Implement substructure for suites and testcases.
+   * Implement substructure for jobs, suites, (<-- oxford comma) and testcases.
    */
 
-  function getCommitTime() {
+  this.getCommitTime = function() {
     // TODO: Implement.
     return new Date(0);
   }
 
-  function getCommitterName() {
+  this.getCommitterName = function() {
     // TODO: Implement.
     return "Max Mustermann";
   }
 
-  function getStatus() {
+  this.getStatus = function() {
     // TODO: Implement.
     return "green"; // Maybe use boolean instead?
   }
 
-  function getXML() {
+  this.getXML = function() {
     // TODO: Implement.
     // 1. get log
     // 2. extract xml from log
@@ -49,23 +49,23 @@ var JUnitBuild = function(id) {
     return "";
   }
 
-  function getBuildTime(jDOM) {
+  this.getBuildTime = function(jDOM) {
     // TODO: Implement.
   }
 
-  function getTestcaseCount(jDOM) {
+  this.getTestcaseCount = function(jDOM) {
     // TODO: Implement.
   }
 
-  function getFailCount(jDOM) {
+  this.getFailCount = function(jDOM) {
     // TODO: Implement.
   }
 
-  function getPassCount(jDOM) {
+  this.getPassCount = function(jDOM) {
     // TODO: Implement.
   }
 
-  function getErrorCount(jDOM) {
+  this.getErrorCount = function(jDOM) {
     // TODO: Implement.
   }
 }
