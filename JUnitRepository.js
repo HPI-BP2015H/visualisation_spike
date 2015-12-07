@@ -2,6 +2,7 @@ var JUnitRepository = function(slug) {
   //methods
 
   this.getBranches = function() {
+
     var apiPath = "https://api.travis-ci.org/v3/repo/" + this.slug + "/branches";
     var result = getResultFromAPIPath(apiPath).branches;
     for (var i = 0; i < result.length; i++) {
@@ -26,8 +27,6 @@ var JUnitRepository = function(slug) {
   this.branches = [];
   this.allBuilds = getAllBuilds();
   this.getBranches();
-  console.log("BRANCHES:");
-  console.log(this.branches);
 
   //private
 

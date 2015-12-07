@@ -1,15 +1,8 @@
-var JUnitBranch = function(rawData, builds, slug) {
+var JUnitBranch = function(travisBranchObject, builds, slug) {
+
   this.slug = slug;
-  this.name = rawData.name;
+  this.name = travisBranchObject.name;
   this.builds = builds;
-  getBuilds();
 
 
-  function getBuilds() {
-    var apiPath = "https://api.travis-ci.org/v3/repo/" + this.slug + "/branches";
-    var result = getResultFromAPIPath(apiPath).builds;
-    for (var build in result) {
-      this.builds.push(new JUnitBuild(build, this.slug));
-    }
-  }
 }

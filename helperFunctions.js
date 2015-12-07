@@ -1,6 +1,5 @@
 function getResultFromAPIPath(anAPIPath) {
   $.ajaxSetup({async: false});
-  // get builds
   var helper = null;
   jQuery.ajax({
     type: "GET",
