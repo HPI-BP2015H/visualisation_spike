@@ -1,50 +1,38 @@
-var JUnitBuild = function(travisBuildObject, slug) {
-  this.id = travisBuildObject.id;
-  this.slug = slug;
+var JUnitBuild = function(id) {
+  this.id = id;
 
+  this.jobs = getJobs();
+
+  // Retrieve values via REST API.
   this.commitTime    = getCommitTime();
   this.committerName = getCommitterName();
-  console.log(this.committerName);
   this.status        = getStatus();
-  console.log(this.status);
-  // Retrieve and parse JUnitXML.
-  var jUnitXML = getXML();
-  var jParser  = new DOMParser();
-  var jDOM     = jParser.parseFromString(jUnitXML, "text/xml");
 
-  // Generate values from JUnitXML.
+  // Aggregate values from JUnitJobs.
   this.time          = getBuildTime(jDOM);
   this.testcaseCount = getTestcaseCount(jDOM);
   this.failCount     = getFailCount(jDOM);
   this.passCount     = getPassCount(jDOM);
   this.errorCount    = getErrorCount(jDOM);
 
-  /*
-   * TODO:
-   * Implement substructure for jobs, suites, (<-- oxford comma) and testcases.
-   */
+  function getJobs() {
+    // TODO: Implement.
+    return [];
+  }
 
   function getCommitTime() {
-      return new Date(travisBuildObject.commit.committed_at);
+    // TODO: Implement.
+    return new Date(0);
   }
 
   function getCommitterName() {
-    var apiPath = "https://api.github.com/"
-    getResultFromGithubAPI()
-    return travisBuildObject.commit;
+    // TODO: Implement.
+    return "Max Mustermann";
   }
 
   function getStatus() {
-    travisBuildObject.state
-  }
-
-  function getXML() {
     // TODO: Implement.
-    // 1. get log
-    // 2. extract xml from log
-    // (or mock xml first)
-    var mock = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>';
-    return mock;
+    return "green"; // Maybe use boolean instead?
   }
 
   function getBuildTime(jDOM) {
@@ -71,9 +59,4 @@ var JUnitBuild = function(travisBuildObject, slug) {
     // TODO: Implement.
     return 0;
   }
-}
-
-function jUnitBuildTest() {
-  var testBuild = new JUnitBuild(94661528);
-  console.log(testBuild);
 }
