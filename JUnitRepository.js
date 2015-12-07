@@ -12,9 +12,9 @@ var JUnitRepository = function(slug) {
 
   this.getBuildsForBranch = function(aBranchName) {
     var b = [];
-    for (var i = 0; i < this.allBuilds.length; i++) {
-      if (this.allBuilds[i].branch.name == aBranchName) {
-        b.push(this.allBuilds[i]);
+    for (var i = 0; i < this.allTravisBuilds.length; i++) {
+      if (this.allTravisBuilds[i].branch.name == aBranchName) {
+        b.push(this.allTravisBuilds[i]);
       }
     }
     return b;
@@ -24,12 +24,12 @@ var JUnitRepository = function(slug) {
 
   this.slug = slug;
   this.branches = [];
-  this.allBuilds = getAllBuilds();
+  this.allTravisBuilds = getAllTravisBuilds();
   this.getBranches();
 
   //private
 
-  function getAllBuilds() {
+  function getAllTravisBuilds() {
     var apiPath = "https://api.travis-ci.org/v3/repo/" + this.slug + "/builds";
     return getResultFromTravisAPI(apiPath).builds;
   }
