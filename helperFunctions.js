@@ -46,6 +46,11 @@ function getResultFromGithubAPI(anAPIPath) {
 };
 
 
+function githubCompatibleSlug(slug){
+  return slug.replace(/\%2F/, "/");
+}
+
+
 
 
 function getAllCommitsWithDate(){
