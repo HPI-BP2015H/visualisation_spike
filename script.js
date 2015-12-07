@@ -68,7 +68,6 @@ function generateBubbleChart(){
 
         /*var data = google.visualization.arrayToDataTable([
           ['ID',    'time', 'Weekday', 'numberOfCommits',     'commitID'],
-          ['',    123456,              2,      3,  33739900],
         ]);*/
         var data = google.visualization.arrayToDataTable(getAllCommitsWithDate());
 

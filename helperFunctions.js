@@ -8,13 +8,13 @@ function getResultFromAPIPath(anAPIPath) {
       "Travis-API-Version":"3"
     },
     dataType: "json",
-    url: anAPIPath//"https://api.travis-ci.org/v3/repo/" + slug + "/builds",
+    url: anAPIPath,
     success: function (data, status, jqXHR) {
-      console.log("[DONE] get builds");
-      helper = data.builds;
+      console.log("[DONE] getting result from " + anAPIPath);
+      helper = data;
     },
     error: function (jqXHR, status) {
-      console.log("[FAILED] get builds");
+      console.log("[FAILED] getting result");
       console.log(jqXHR);
       console.log(status);
     }

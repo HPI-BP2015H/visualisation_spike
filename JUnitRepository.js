@@ -1,16 +1,16 @@
 var JUnitRepository = function(slug) {
   this.slug = slug;
 
-  var branchNames = getBranchNames();
-  var branches = [];
+  var branches = getBranches();
 
-  for(var i = 0; i < branchNames.length; i++) {
+  /*for(var i = 0; i < branchNames.length; i++) {
     branches.push(new JUnitBranch(slug, branchNames[i]));
-  }
+  }*/
 
-  function getBranchNames() {
+  function getBranches() {
     var apiPath = "https://api.travis-ci.org/v3/repo/" + this.slug + "/branches";
-    // TODO: Implement.
+    var result = getResultFromAPIPath(apiPath).branches;
+    console.log(result);
     return [];
   }
 }

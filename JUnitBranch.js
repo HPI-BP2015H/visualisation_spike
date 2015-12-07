@@ -1,11 +1,14 @@
-var JUnitBranch = function(slug, name) {
+var JUnitBranch = function(rawData) {
+
+  
+
   this.slug = slug;
   this.name = name;
 
   var buildIDs = getBuildIDs();
   var builds = [];
 
-  for(var i = 0; i < buildsIDs.length; i++) {
+  for(var i = 0; i < buildIDs.length; i++) {
     builds.push(new JUnitBuild(buildIDs[i]));
   }
 
