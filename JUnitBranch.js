@@ -8,7 +8,7 @@ var JUnitBranch = function(rawData, builds, slug) {
   function getBuilds() {
     var apiPath = "https://api.travis-ci.org/v3/repo/" + this.slug + "/branches";
     var result = getResultFromAPIPath(apiPath).builds;
-    for each (build in result) {
+    for (var build in result) {
       this.builds.push(new JUnitBuild(build, this.slug));
     }
   }
