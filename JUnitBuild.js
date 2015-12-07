@@ -5,21 +5,21 @@ var JUnitBuild = function(id) {
   this.id = id;
 
   // Retrieve values via REST API.
-  var commitTime = getCommitTime();
+  var commitTime    = getCommitTime();
   var committerName = getCommitterName();
-  var status = getStatus();
+  var status        = getStatus();
 
   // Retrieve and parse JUnitXML.
   var jUnitXML = getXML();
-  var jParser = new DOMParser();
-  var jDOM = jParser.parseFromString(jUnitXML, "text/xml");
+  var jParser  = new DOMParser();
+  var jDOM     = jParser.parseFromString(jUnitXML, "text/xml");
 
   // Generate values from JUnitXML.
-  var time = getBuildTime(jDOM);
+  var time          = getBuildTime(jDOM);
   var testcaseCount = getTestcaseCount(jDOM);
-  var failCount = getFailureCount(jDOM);
-  var passCount = getFailureCount(jDOM);
-  var errorCount = getFailureCount(jDOM);
+  var failCount     = getFailCount(jDOM);
+  var passCount     = getPassCount(jDOM);
+  var errorCount    = getErrorCount(jDOM);
 
   /*
    * TODO:
@@ -48,6 +48,24 @@ var JUnitBuild = function(id) {
     // (or mock xml first)
     return "";
   }
-}
 
-var testObj = new JUnitBuild(1);
+  function getBuildTime(jDOM) {
+    // TODO: Implement.
+  }
+
+  function getTestcaseCount(jDOM) {
+    // TODO: Implement.
+  }
+
+  function getFailCount(jDOM) {
+    // TODO: Implement.
+  }
+
+  function getPassCount(jDOM) {
+    // TODO: Implement.
+  }
+
+  function getErrorCount(jDOM) {
+    // TODO: Implement.
+  }
+}
