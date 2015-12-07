@@ -1,4 +1,4 @@
-function getBuilds() {
+function getResultFromAPIPath(anAPIPath) {
   $.ajaxSetup({async: false});
   // get builds
   var helper = null;
@@ -8,7 +8,7 @@ function getBuilds() {
       "Travis-API-Version":"3"
     },
     dataType: "json",
-    url: "https://api.travis-ci.org/v3/repo/" + slug + "/builds",
+    url: anAPIPath//"https://api.travis-ci.org/v3/repo/" + slug + "/builds",
     success: function (data, status, jqXHR) {
       console.log("[DONE] get builds");
       helper = data.builds;
