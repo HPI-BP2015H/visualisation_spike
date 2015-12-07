@@ -1,11 +1,16 @@
-var JUnitBranch = function(xml){
+var JUnitTestCase = function(xml){
 	
-	this.time = getTime();
-	this.className = setClassName();
+	this.time = setTestTime();
+	this.testClassName = setTestClassName();
 	this.testName = setTestName();
-	this.status = setStatus();
+	this.testStatus = setTestStatus();
 
-	function setClassName(){
+	function setTestTime(){
+	//TODO
+	return 0.2;
+	}
+	
+	function setTestClassName(){
 	//TODO
 	return 0;
 	}
@@ -15,7 +20,7 @@ var JUnitBranch = function(xml){
 	return 0;
 	}
 
-	function setStatus(){
+	function setTestStatus(){
 	//TODO
 	return "error";
 	}
