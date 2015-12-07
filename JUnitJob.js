@@ -3,14 +3,15 @@ var JUnitJob = function(id) {
 
   // Retrieve values via REST API.
   this.status = getStatus(this.id);
+  this.log    = getLog(this.id);
 
   // Retrieve and parse JUnitXML.
-  var jUnitXML = getXML(this.id);
+  var jUnitXML = getXML(this.log);
   var jParser  = new DOMParser();
   var jDOM     = jParser.parseFromString(jUnitXML, "text/xml");
 
   // Generate values from JUnitXML.
-  this.os            = getOS();
+  this.os            = getOS(this.log);
   this.env           = getEnv();
   this.time          = getJobTime(jDOM);
   this.testcaseCount = getTestcaseCount(jDOM);
@@ -20,13 +21,28 @@ var JUnitJob = function(id) {
 
   function getStatus(id) {
     var apiPath = "https://api.travis-ci.org/v3/job/" + id.toString();
-    var status = getResultFromAPIPath(apiPath).state;
+    var status = getResultFromTravisAPI(apiPath).state;
     return status;
   }
 
-  function getOS() {
-    // TODO: Implement.
-    return "dummy";
+  function getLog(id) {
+    $.ajaxSetup({async: false});
+    var log = "";
+    jQuery.get(
+      "https://api.travis-ci.org/jobs/" + id.toString() + "/log.txt?deansi=true",
+      function(data) {
+        log = data;
+      },
+      'text'
+    );
+    return log;
+  }
+
+  function getOS(log) {
+    var osKey = log.split("\n")[0].split(" ")[2].split("-")[1];
+    if(osKey == "linux"  ) { return "linux"; }
+    if(osKey == "jupiter") { return "osx";   }
+    return "na";
   }
 
   function getEnv() {
@@ -59,25 +75,14 @@ var JUnitJob = function(id) {
     return 0;
   }
 
-  function getXML(id) {
-    $.ajaxSetup({async: false});
-    var log = "";
-    jQuery.get(
-      "https://api.travis-ci.org/jobs/" + id.toString() + "/log.txt?deansi=true",
-      function(data) {
-        log = data;
-      },
-      'text'
-    );
-    
-    // TODO: Do something with the log. -- There is no XML in yet.
-
+  function getXML(log) {
+    // TODO: Find XML in log and return it.
     var mock = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>';
     return mock;
   }
 }
 
 function jUnitJobTest() {
-  var testJob = new JUnitJob(94661529);
+  var testJob = new JUnitJob(94661534);
   console.log(testJob);
 }
