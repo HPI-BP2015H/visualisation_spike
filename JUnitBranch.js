@@ -1,14 +1,24 @@
-var JUnitBranch = function(travisBranchObject, builds, slug) {
+var JUnitBranch = function(slug, branchName) {
 
-  this.createJUnitBuilds = function() {
-    for (var i = 0; i < builds.length; i++) {
-      this.builds.push(new JUnitBuild(builds[i], slug));
-    }
-  }
+  //variables
 
-  this.name = travisBranchObject.name;
   this.slug = slug;
+  this.name = branchName;
   this.builds = [];
-  this.createJUnitBuilds();
+
+  // init
+  this.builds = getAllBuilds(this.slug, this.name);
+
+  // private
+
+  function getAllBuilds(slug, branchName) {
+    var apiPath = "https://api.travis-ci.org/v3/repo/" + slug + "/builds?branch.name=" + branchName;
+    var builds = [];
+    var travisBuilds = getResultFromTravisAPI(apiPath).builds;
+    for (var i = 0; i < travisBuilds.length; i++) {
+      builds.push(new JUnitBuild(travisBuilds[i], slug));
+    }
+    return builds;
+  }
 
 }

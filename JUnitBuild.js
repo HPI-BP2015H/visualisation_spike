@@ -6,7 +6,7 @@ var JUnitBuild = function(travisBuildObject, slug) {
 
   // Retrieve values via REST API.
   this.commitTime    = getCommitTime();
-  this.committerName = "Max M.";//getCommitterName();
+  this.committerName = getCommitterName();
   this.status        = getStatus();
 
   // Aggregate values from JUnitJobs.
@@ -29,10 +29,10 @@ var JUnitBuild = function(travisBuildObject, slug) {
   }
 
   function getCommitterName() {
-    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;
-    var name = getResultFromGithubAPI(apiPath).commit.committer.name;
-    if (name) {
-      return name;
+    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;   
+    var res = getResultFromGithubAPI(apiPath);	
+    if (res) {
+      return res.commit.committer.name;
     } else {
       return "Max Mustermann";
     }
