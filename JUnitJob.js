@@ -2,10 +2,10 @@ var JUnitJob = function(id) {
   this.id = id;
 
   // Retrieve values via REST API.
-  this.status = getStatus();
+  this.status = getStatus(this.id);
 
   // Retrieve and parse JUnitXML.
-  var jUnitXML = getXML();
+  var jUnitXML = getXML(this.id);
   var jParser  = new DOMParser();
   var jDOM     = jParser.parseFromString(jUnitXML, "text/xml");
 
@@ -18,9 +18,10 @@ var JUnitJob = function(id) {
   this.passCount     = getPassCount(jDOM);
   this.errorCount    = getErrorCount(jDOM);
 
-  function getStatus() {
-    // TODO: Implement.
-    return "green";
+  function getStatus(id) {
+    var apiPath = "https://api.travis-ci.org/v3/job/" + id.toString();
+    var status = getResultFromAPIPath(apiPath).state;
+    return status;
   }
 
   function getOS() {
@@ -58,21 +59,19 @@ var JUnitJob = function(id) {
     return 0;
   }
 
-  function getXML() {
-    // TODO: Implement.
-    // 1. get log
-    // 2. extract xml from log
-    // (or mock xml first)
+  function getXML(id) {
     $.ajaxSetup({async: false});
     var log = "";
     jQuery.get(
-      "https://api.travis-ci.org/jobs/94661529/log.txt?deansi=true",
+      "https://api.travis-ci.org/jobs/" + id.toString() + "/log.txt?deansi=true",
       function(data) {
         log = data;
       },
       'text'
     );
-    // Do something with the log. -- There is no XML in yet.
+    
+    // TODO: Do something with the log. -- There is no XML in yet.
+
     var mock = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>';
     return mock;
   }
