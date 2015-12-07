@@ -1,11 +1,12 @@
-var JUnitBuild = function(id) {
-  this.id = id;
+var JUnitBuild = function(travisBuildObject, slug) {
+  this.id = travisBuildObject.id;
+  this.slug = slug;
 
-  // Retrieve values via REST API.
   this.commitTime    = getCommitTime();
   this.committerName = getCommitterName();
+  console.log(this.committerName);
   this.status        = getStatus();
-
+  console.log(this.status);
   // Retrieve and parse JUnitXML.
   var jUnitXML = getXML();
   var jParser  = new DOMParser();
@@ -24,18 +25,17 @@ var JUnitBuild = function(id) {
    */
 
   function getCommitTime() {
-    // TODO: Implement.
-    return new Date(0);
+      return new Date(travisBuildObject.commit.committed_at);
   }
 
   function getCommitterName() {
-    // TODO: Implement.
-    return "Max Mustermann";
+    var apiPath = "https://api.github.com/"
+    getResultFromGithubAPI()
+    return travisBuildObject.commit;
   }
 
   function getStatus() {
-    // TODO: Implement.
-    return "green"; // Maybe use boolean instead?
+    travisBuildObject.state
   }
 
   function getXML() {

@@ -1,4 +1,4 @@
-function getResultFromAPIPath(anAPIPath) {
+function getResultFromTravisAPI(anAPIPath) {
   $.ajaxSetup({async: false});
   var helper = null;
   jQuery.ajax({
@@ -20,6 +20,33 @@ function getResultFromAPIPath(anAPIPath) {
   });
   return helper;
 };
+
+
+function getResultFromGithubAPI(anAPIPath) {
+  $.ajaxSetup({async: false});
+  var helper = null;
+  jQuery.ajax({
+    type: "GET",
+    /*headers: {
+      "Travis-API-Version":"3"
+    },*/
+    dataType: "json",
+    url: anAPIPath,
+    success: function (data, status, jqXHR) {
+      console.log("[DONE] getting result from " + anAPIPath);
+      helper = data;
+    },
+    error: function (jqXHR, status) {
+      console.log("[FAILED] getting result");
+      console.log(jqXHR);
+      console.log(status);
+    }
+  });
+  return helper;
+};
+
+
+
 
 function getAllCommitsWithDate(){
   var builds = getBuilds();
