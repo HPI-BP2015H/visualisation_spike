@@ -2,10 +2,11 @@ var JUnitBuild = function(travisBuildObject, slug) {
   this.id = travisBuildObject.id;
   this.slug = slug;
   this.jobs = getJobs();
+  console.log(travisBuildObject);
 
   // Retrieve values via REST API.
   this.commitTime    = getCommitTime();
-  this.committerName = "Max M.";//getCommitterName();
+  this.committerName = getCommitterName();
   this.status        = getStatus();
 
   // Aggregate values from JUnitJobs.
@@ -16,8 +17,11 @@ var JUnitBuild = function(travisBuildObject, slug) {
   this.errorCount    = getErrorCount(jDOM);
 
   function getJobs() {
-    // TODO: Implement.
-    return [];
+    var j = [];
+    for (var i = 0; i < travisBuildObject.jobs.length; i++) {
+      j.push(new JUnitJob(travisBuildObject.jobs[i].id)
+    }
+    return j;
   }
 
   function getCommitTime() {
@@ -25,10 +29,10 @@ var JUnitBuild = function(travisBuildObject, slug) {
   }
 
   function getCommitterName() {
-    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;
-    var name = getResultFromGithubAPI(apiPath).commit.committer.name;
-    if (name) {
-      return name;
+    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;   
+    var res = getResultFromGithubAPI(apiPath);	
+    if (res) {
+      return res.commit.committer.name;
     } else {
       return "Max Mustermann";
     }
