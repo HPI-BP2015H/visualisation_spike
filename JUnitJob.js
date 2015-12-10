@@ -16,7 +16,7 @@ var JUnitJob = function(id) {
 
   // Generate values from JUnitXML.
   this.os            = getOS(this.log);
-  this.env           = getEnv();
+  this.env           = getEnv(this.log);
   this.time          = getJobTime(jDOM);
   this.testcaseCount = getTestcaseCount(jDOM);
   this.failCount     = getFailCount(jDOM);
@@ -50,9 +50,28 @@ var JUnitJob = function(id) {
     return "na";
   }
 
-  function getEnv() {
-    // TODO: Implement.
-    return "dummy";
+  function getEnv(log) {
+    var lines = log.split("\n");
+    var startMarker = "Setting environment variables from .travis.yml";
+    var startLine = -1;
+
+    for(var i = 0; i < lines.length; i++) {
+      if(lines[i].indexOf(startMarker) > -1) {
+        startLine = i;
+        break;
+      }
+    }
+
+    var env = {}
+    var i = startLine + 1;
+
+    while(lines[i] != 0) {
+      var pair = lines[i].split(" ")[2].split("=");
+      env[pair[0]] = pair[1];
+      i++;
+    }
+
+    return env;
   }
 
   function getJobTime(jDOM) {
