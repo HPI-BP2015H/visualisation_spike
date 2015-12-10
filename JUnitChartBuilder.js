@@ -25,6 +25,7 @@ var JUnitChartBuilder = function(slug) {
 
     generateStackedAreaChart(stackedAreaData);
     generateBubbleChart();
+		setTimeout(generatePieChart1,1000);
   }
 
   function generateStackedAreaChart(dataArray) {
@@ -107,6 +108,31 @@ var JUnitChartBuilder = function(slug) {
       chart.draw(data, options);
     }
   }
+
+	function generatePieChart1(){
+		google.load("visualization", "1.0", {packages: ["corechart"]});
+    google.setOnLoadCallback(function() {
+			var data = [['Branch', 'Health']];
+
+			for(var i=0;i<this.repo.braches.length;i++){
+				var passes=0;
+				for(var j=0; j<repo.braches[i].builds.length; j++){
+					if(repo.braches[i].builds[j].status=="passed"){
+						passes=passes+100;
+					}
+				}
+				var health=passes/repo.braches[i].builds.length;
+				data.push([repo.braches[i].name,health])
+			}
+
+			var options = {
+          title: 'BrachHealth'
+        };
+
+			var chart = new google.visualization.BubbleChart(document.getElementById('pieChart1'));
+      chart.draw(google.visualization.arrayToDataTable(data),options);
+		});
+	}
 
   function printXML(builds) {
     for (var i = 0; i < builds.length; i++) {

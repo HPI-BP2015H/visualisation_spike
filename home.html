@@ -12,15 +12,15 @@
     <script type="text/javascript" src="JUnitBuild.js"> </script>
     <script type="text/javascript" src="JUnitJob.js"> </script>
     <script type="text/javascript">
-      //getXML();
+
       var slug = "HPI-BP2015H%2FSWT-Demo"
-      generateCharts();
-      getAllCommitsWithDate();
+      var chartsBuilder = new JUnitChartBuilder(slug);
 
     </script>
   </head>
   <body>
     <div id="stackedAreaChart" style="height: 400px;"></div>
     <div id="series_chart_div" style="height: 500px;"></div>
+    <div id="pieChart1" style="height: 500px;"></div>
   </body>
 </html>
