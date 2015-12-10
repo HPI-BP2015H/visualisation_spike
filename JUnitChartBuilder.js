@@ -1,9 +1,10 @@
 var JUnitChartBuilder = function(slug) {
   this.repo = new JUnitRepository(slug);
 	console.log(this.repo);
-	setTimeout(generateCharts, 3500);
+	setTimeout(generateCharts, 5000);
 
   function generateCharts() {
+		console.log('Waiting done');
     var mockXMLs = [
       '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>',
       '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="2" failures="1" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
@@ -22,13 +23,14 @@ var JUnitChartBuilder = function(slug) {
       var passes = tests - fails;
       stackedAreaData.push([(i + 1).toString(), errors, fails, passes]);
     }
-
+		console.log('Generate NAO');
     generateStackedAreaChart(stackedAreaData);
-    generateBubbleChart();
-		setTimeout(generatePieChart1,1000);
+    //generateBubbleChart();
+		//setTimeout(generatePieChart1,1000);
   }
 
   function generateStackedAreaChart(dataArray) {
+				console.log('Generate NAO');
     // Just a mock-up right now.
     google.load("visualization", "1.0", {
       packages: ["corechart"]
