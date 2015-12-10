@@ -75,28 +75,23 @@ var JUnitJob = function(id) {
   }
 
   function getJobTime(jDOM) {
-    // TODO: Implement.
-    return 0;
+    return parseFloat(jDOM.documentElement.getAttribute("time")));
   }
 
   function getTestcaseCount(jDOM) {
-    // TODO: Implement.
-    return 0;
+    return parseFloat(jDOM.documentElement.getAttribute("tests")));
   }
 
   function getFailCount(jDOM) {
-    // TODO: Implement.
-    return 0;
+    return parseFloat(jDOM.documentElement.getAttribute("failures")));
   }
 
   function getPassCount(jDOM) {
-    // TODO: Implement.
-    return 0;
+    return (getTestcaseCount(jDOM) - getFailCount(jDOM));
   }
 
   function getErrorCount(jDOM) {
-    // TODO: Implement.
-    return 0;
+    return parseFloat(jDOM.documentElement.getAttribute("errors")));
   }
 
   function getXML(log) {
