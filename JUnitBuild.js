@@ -21,7 +21,7 @@ var JUnitBuild = function(travisBuildObject, slug) {
   function getJobs() {
     var j = [];
     for (var i = 0; i < travisBuildObject.jobs.length; i++) {
-      j.push(new JUnitJob(travisBuildObject.jobs[i].id));
+    //  j.push(new JUnitJob(travisBuildObject.jobs[i].id));
     }
     return j;
   }
