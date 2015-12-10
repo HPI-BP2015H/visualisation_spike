@@ -34,7 +34,7 @@ var JUnitJob = function(id) {
     $.ajaxSetup({async: false});
     var log = "";
     jQuery.get(
-      "https://api.travis-ci.org/jobs/" + id.toString() + "/log.txt?deansi=true",
+      "https://s3.amazonaws.com/archive.travis-ci.org/jobs/" + id.toString() + "/log.txt",
       function(data) {
         log = data;
       },
