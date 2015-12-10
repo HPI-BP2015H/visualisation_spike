@@ -1,4 +1,4 @@
-var JUnitRepository = function(slug) {
+var JUnitRepository = function(slug, cb) {
 
   //variables
 
@@ -16,8 +16,14 @@ var JUnitRepository = function(slug) {
     getResultFromTravisAPI(apiPath, function(data) {
       var branches = [];
       var travisBranches = data.branches;
+      var doneCount = 0;
       for (var i = 0; i < travisBranches.length; i++) {
-        branches.push(new JUnitBranch(repository.slug, travisBranches[i].name));
+        branches.push(new JUnitBranch(repository.slug, travisBranches[i].name, function () {
+          doneCount++;
+          if (doneCount == travisBranches.length) {
+            cb();
+          }
+        }));
       }
       repository.branches = branches;
     });

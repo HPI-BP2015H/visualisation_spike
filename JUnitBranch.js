@@ -1,4 +1,4 @@
-var JUnitBranch = function(slug, branchName) {
+var JUnitBranch = function(slug, branchName, cb) {
 
   //variables
 
@@ -21,6 +21,7 @@ var JUnitBranch = function(slug, branchName) {
         builds.push(new JUnitBuild(travisBuilds[i], branch.slug));
       }
       branch.builds = builds;
+      cb();
     });
   }
 
