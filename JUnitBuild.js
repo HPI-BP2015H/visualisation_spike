@@ -1,4 +1,4 @@
-var JUnitBuild = function(travisBuildObject, slug) {
+ var JUnitBuild = function(travisBuildObject, slug) {
   this.id = travisBuildObject.id;
   this.slug = slug;
   this.jobs = getJobs();
