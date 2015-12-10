@@ -9,6 +9,8 @@
   this.committerName = getCommitterName();
   this.status = getStatus();
 
+  //just a fix. later in the values below will be aquired through this.jobs 
+  var jDOM=0;
   // Aggregate values from JUnitJobs.
   this.time = getBuildTime(jDOM);
   this.testcaseCount = getTestcaseCount(jDOM);
