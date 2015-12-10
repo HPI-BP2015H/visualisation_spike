@@ -5,16 +5,16 @@ var JUnitBuild = function(travisBuildObject, slug) {
   console.log(travisBuildObject);
 
   // Retrieve values via REST API.
-  this.commitTime    = getCommitTime();
+  this.commitTime = getCommitTime();
   this.committerName = getCommitterName();
-  this.status        = getStatus();
+  this.status = getStatus();
 
   // Aggregate values from JUnitJobs.
-  this.time          = getBuildTime(jDOM);
+  this.time = getBuildTime(jDOM);
   this.testcaseCount = getTestcaseCount(jDOM);
-  this.failCount     = getFailCount(jDOM);
-  this.passCount     = getPassCount(jDOM);
-  this.errorCount    = getErrorCount(jDOM);
+  this.failCount = getFailCount(jDOM);
+  this.passCount = getPassCount(jDOM);
+  this.errorCount = getErrorCount(jDOM);
 
   function getJobs() {
     var j = [];
@@ -25,11 +25,11 @@ var JUnitBuild = function(travisBuildObject, slug) {
   }
 
   function getCommitTime() {
-      return new Date(travisBuildObject.commit.committed_at);
+    return new Date(travisBuildObject.commit.committed_at);
   }
 
   function getCommitterName() {
-    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;
+    var apiPath = "https://api.github.com/repos/" + githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;
     var res = getResultFromGithubAPI(apiPath);
     if (res) {
       return res.commit.committer.name;

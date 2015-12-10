@@ -22,5 +22,4 @@ var JUnitRepository = function(slug) {
       repository.branches = branches;
     });
   }
-
 }
