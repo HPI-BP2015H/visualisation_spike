@@ -7,18 +7,20 @@ var JUnitRepository = function(slug) {
 
   // init
 
-  this.branches = getAllBranches(this.slug);
+  loadBranches(this);
 
   //private
 
-  function getAllBranches(slug) {
-    var apiPath = "https://api.travis-ci.org/v3/repo/" + slug + "/branches";
-    var branches = [];
-    var travisBranches = getResultFromTravisAPI(apiPath).branches;
-    for (var i = 0; i < travisBranches.length; i++) {
-      branches.push(new JUnitBranch(slug, travisBranches[i].name));
-    }
-    return branches;
+  function loadBranches(repository) {
+    var apiPath = "https://api.travis-ci.org/v3/repo/" + repository.slug + "/branches";
+    getResultFromTravisAPI(apiPath, function(data) {
+      var branches = [];
+      var travisBranches = data.branches;
+      for (var i = 0; i < travisBranches.length; i++) {
+        branches.push(new JUnitBranch(repository.slug, travisBranches[i].name));
+      }
+      repository.branches = branches;
+    });
   }
 
 }
