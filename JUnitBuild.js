@@ -1,4 +1,5 @@
- var JUnitBuild = function(travisBuildObject, slug) {
+ 
+var JUnitBuild = function(travisBuildObject, slug) {
   this.id = travisBuildObject.id;
   this.slug = slug;
   this.jobs = getJobs();
@@ -9,8 +10,8 @@
   this.committerName = getCommitterName();
   this.status = getStatus();
 
-  //just a fix. later in the values below will be aquired through this.jobs 
-  var jDOM=0;
+  //just a fix. later in the values below will be aquired through this.jobs
+  var jDOM = 0;
   // Aggregate values from JUnitJobs.
   this.time = getBuildTime(jDOM);
   this.testcaseCount = getTestcaseCount(jDOM);
