@@ -2,8 +2,12 @@ var JUnitChartBuilder = function(slug) {
 
   this.repo = new JUnitRepository(slug , generateCharts);
 	console.log(this.repo);
+  var that = this;
+  setTimeout(function() {
+    generateCharts(that);
+}, 5000);
 
-  function generateCharts() {
+  function generateCharts(chartBuilder) {
 		console.log("generateCharts");
     var mockXMLs = [
       '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>',
@@ -24,18 +28,19 @@ var JUnitChartBuilder = function(slug) {
       stackedAreaData.push([(i + 1).toString(), errors, fails, passes]);
     }
 
-    generateStackedAreaChart(stackedAreaData);
-    generateBubbleChart();
-		generatePieChart1();
-		console.log("loadGoogle");
-		//google.load("visualization", "1.0", {packages: ["corechart"]});
+    google.load("visualization", "1.0", {packages: ["corechart"], callback: function() {
+      generateStackedAreaChart(stackedAreaData, chartBuilder);
+      generateBubbleChart(chartBuilder);
+		  generatePieChart1(chartBuilder);
+    }});
   }
 
 
-  function generateStackedAreaChart(dataArray) {
+  function generateStackedAreaChart(dataArray, chartBuilder) {
+    console.log("tyrsyrysryrdsytd");
     // Just a mock-up right now.
-		google.load("visualization", "1.0", {packages: ["corechart"]});
-    google.setOnLoadCallback(function() {
+
+
 			console.log("----------------------------------------------------------------------");
       var container = document.getElementById('stackedAreaChart');
       var chart = new google.visualization.AreaChart(container);
@@ -73,19 +78,16 @@ var JUnitChartBuilder = function(slug) {
         }]
       };
       chart.draw(data, options);
-    });
+
   }
 
-  function generateBubbleChart() {
+  function generateBubbleChart(chartBuilder) {
 
-    google.setOnLoadCallback(drawSeriesChart);
-		console.log('[AAAAAAAAaaAaAAAaaaaaaaaaaaAaAaAaAaAaAaAasukztrertzjtrhAaAaAaAaAaAAAAAAAaaaaAaAaaAaAaAaAaAaAaAaAaA');
-    function drawSeriesChart() {
 
       /*var data = google.visualization.arrayToDataTable([
 		['ID',    'time', 'Weekday', 'numberOfCommits',     'commitID'],
 	]);*/
-      var data = google.visualization.arrayToDataTable(getAllCommitsWithDate());
+      var data = google.visualization.arrayToDataTable(getAllCommitsWithDate(chartBuilder));
 
       var options = {
         title: 'Correlation between life expectancy, fertility rate and population of some world countries (2010)',
@@ -108,16 +110,16 @@ var JUnitChartBuilder = function(slug) {
       var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
       chart.draw(data, options);
     }
-  };
 
 
-	function getAllCommitsWithDate() { //for all branches
+
+	function getAllCommitsWithDate(chartBuilder) { //for all branches
 		console.log('[AAAAAAAAaaAaAAAaaaaaaaaaaaAaAaAaAaAaAaAaAaAaAaAaAaAAAAAAAaaaaAaAaaAaAaAaAaAaAaAaAaA');
 
 	  var builds = [];
-		for (var i = 0; i < this.repo.branches.length; i++) {
-			for (var j = 0; j < this.repo.branches[i].builds.length; j++) {
-				builds.push(this.repo.branches[i].builds[j])
+		for (var i = 0; i < chartBuilder.repo.branches.length; i++) {
+			for (var j = 0; j < chartBuilder.repo.branches[i].builds.length; j++) {
+				builds.push(chartBuilder.repo.branches[i].builds[j])
 			}
 		}
 
@@ -153,29 +155,29 @@ var JUnitChartBuilder = function(slug) {
 	  return array;
 	};
 
-	function generatePieChart1(){
+	function generatePieChart1(chartBuilder){
 
-    google.setOnLoadCallback(function() {
 			var data = [['Branch', 'Health']];
 
-			for(var i=0;i<this.repo.braches.length;i++){
+			for(var i=0;i<chartBuilder.repo.branches.length;i++){
 				var passes=0;
-				for(var j=0; j<repo.braches[i].builds.length; j++){
-					if(repo.braches[i].builds[j].status=="passed"){
+				for(var j=0; j<chartBuilder.repo.branches[i].builds.length; j++){
+					if(chartBuilder.repo.branches[i].builds[j].status=="passed"){
 						passes=passes+100;
 					}
 				}
-				var health=passes/repo.braches[i].builds.length;
-				data.push([repo.braches[i].name,health])
+				var health=(passes)/(chartBuilder.repo.branches[i].builds.length);
+				data.push([chartBuilder.repo.branches[i].name,health])
 			}
 
 			var options = {
-          title: 'BrachHealth'
+          title: 'Branch Health'
         };
 
-			var chart = new google.visualization.BubbleChart(document.getElementById('pieChart1'));
+        console.log(data);
+			var chart = new google.visualization.PieChart(document.getElementById('pieChart1'));
       chart.draw(google.visualization.arrayToDataTable(data),options);
-		});
+
 	}
 
 }

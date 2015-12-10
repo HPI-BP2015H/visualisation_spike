@@ -21,7 +21,7 @@ var JUnitRepository = function(slug, cb) {
         branches.push(new JUnitBranch(repository.slug, travisBranches[i].name, function () {
           doneCount++;
           if (doneCount == travisBranches.length) {
-            cb();
+            //setTimeout(cb, 5000);
           }
         }));
       }
