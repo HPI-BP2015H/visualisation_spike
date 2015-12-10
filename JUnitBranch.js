@@ -7,7 +7,7 @@ var JUnitBranch = function(slug, branchName) {
   this.builds = [];
 
   // init
-  
+
   loadBuilds(this);
 
   // private
@@ -17,7 +17,7 @@ var JUnitBranch = function(slug, branchName) {
     getResultFromTravisAPI(apiPath, function(data) {
       var builds = [];
       var travisBuilds = data.builds;
-      for (var i = 0; i < travisBranches.length; i++) {
+      for (var i = 0; i < travisBuilds.length; i++) {
         builds.push(new JUnitBuild(travisBuilds[i], branch.slug));
       }
       branch.builds = builds;

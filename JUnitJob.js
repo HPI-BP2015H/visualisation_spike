@@ -1,8 +1,12 @@
 var JUnitJob = function(id) {
+
+  //variables
+
   this.id = id;
 
-  // Retrieve values via REST API.
-  this.status = getStatus(this.id);
+  // init
+
+  loadStatus(this);
   this.log    = getLog(this.id);
 
   // Retrieve and parse JUnitXML.
@@ -19,10 +23,11 @@ var JUnitJob = function(id) {
   this.passCount     = getPassCount(jDOM);
   this.errorCount    = getErrorCount(jDOM);
 
-  function getStatus(id) {
-    var apiPath = "https://api.travis-ci.org/v3/job/" + id.toString();
-    var status = getResultFromTravisAPI(apiPath).state;
-    return status;
+  function loadStatus(job) {
+    var apiPath = "https://api.travis-ci.org/v3/job/" + job.id.toString();
+    getResultFromTravisAPI(apiPath, function(data) {
+      job.status = data.state;
+    });
   }
 
   function getLog(id) {

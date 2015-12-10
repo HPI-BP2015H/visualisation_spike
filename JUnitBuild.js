@@ -19,7 +19,7 @@ var JUnitBuild = function(travisBuildObject, slug) {
   function getJobs() {
     var j = [];
     for (var i = 0; i < travisBuildObject.jobs.length; i++) {
-      j.push(new JUnitJob(travisBuildObject.jobs[i].id)
+      j.push(new JUnitJob(travisBuildObject.jobs[i].id));
     }
     return j;
   }
@@ -29,8 +29,8 @@ var JUnitBuild = function(travisBuildObject, slug) {
   }
 
   function getCommitterName() {
-    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;   
-    var res = getResultFromGithubAPI(apiPath);	
+    var apiPath = "https://api.github.com/repos/"+ githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;
+    var res = getResultFromGithubAPI(apiPath);
     if (res) {
       return res.commit.committer.name;
     } else {
@@ -39,7 +39,7 @@ var JUnitBuild = function(travisBuildObject, slug) {
   }
 
   function getStatus() {
-    return travisBuildObject.state
+    return travisBuildObject.state;
   }
 
   function getBuildTime(jDOM) {
