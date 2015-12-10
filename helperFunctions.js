@@ -52,41 +52,6 @@ function githubCompatibleSlug(slug) {
 
 
 
-
-function getAllCommitsWithDate() {
-  var builds = getBuilds();
-  var array = [
-    ['ID', 'Time', 'Weekday', 'numberOfFailures', 'numberofCommits']
-  ];
-  var weekday = null;
-  var time = null;
-  var isFailure = null;
-  for (var i = 0; i < builds.length; i++) {
-    time = dateToHalfHours(new Date(builds[i].commit.committed_at));
-    weekday = new Date(builds[i].commit.committed_at).getDay();
-    isFailure = true;
-    var n = dateAlreadyInArray(array, time, weekday);
-    if (n) {
-      array[n][4] += 1;
-      if (isFailure) {
-        array[n][3] += 1;
-      };
-    } else {
-      a = [''];
-      a.push(time)
-      a.push(weekday);
-      if (isFailure) {
-        a.push(1);
-      } else {
-        a.push(0);
-      }
-      a.push(1);
-      array.push(a);
-    }
-  }
-  return array;
-};
-
 function dateAlreadyInArray(array, time, weekday) {
   for (var i = 0; i < array.length; i++) {
     if (array[i][1] == time && array[i][2] == weekday) {
@@ -127,4 +92,30 @@ function dateToHalfHours(date) {
   }
 
   return hour;
+}
+
+function printXML(builds) {
+  for (var i = 0; i < builds.length; i++) {
+    for (var j = 0; j < builds[i].jobs.length; j++) {
+      var target = "https://api.travis-ci.org/jobs/" + builds[i].jobs[j].id + "/log.txt?deansi=true";
+      jQuery.get(
+        target,
+        function(data) {
+          console.log("[DONE] get logs");
+          document.getElementsByTagName("body")[0].innerHTML += "JOB:<br/><br/>\n";
+          document.getElementsByTagName("body")[0].innerHTML += data;
+          document.getElementsByTagName("body")[0].innerHTML += "<br/><br/><br/>\n";
+        },
+        'text'
+      );
+    }
+  }
+}
+
+function buildStateToBool(aState) {
+  if (aState == "passed") {
+    return true;
+  } else {
+    return false;
+  }
 }
