@@ -1,9 +1,10 @@
 var JUnitChartBuilder = function(slug) {
-  this.repo = new JUnitRepository(slug);
+
+  this.repo = new JUnitRepository(slug , generateCharts);
 	console.log(this.repo);
-	setTimeout(generateCharts, 3500);
 
   function generateCharts() {
+		console.log("generateCharts");
     var mockXMLs = [
       '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>',
       '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="2" failures="1" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
@@ -25,15 +26,17 @@ var JUnitChartBuilder = function(slug) {
 
     generateStackedAreaChart(stackedAreaData);
     generateBubbleChart();
-		setTimeout(generatePieChart1,1000);
+		generatePieChart1();
+		console.log("loadGoogle");
+		//google.load("visualization", "1.0", {packages: ["corechart"]});
   }
+
 
   function generateStackedAreaChart(dataArray) {
     // Just a mock-up right now.
-    google.load("visualization", "1.0", {
-      packages: ["corechart"]
-    });
+		google.load("visualization", "1.0", {packages: ["corechart"]});
     google.setOnLoadCallback(function() {
+			console.log("----------------------------------------------------------------------");
       var container = document.getElementById('stackedAreaChart');
       var chart = new google.visualization.AreaChart(container);
       /*var data = google.visualization.arrayToDataTable([
@@ -74,9 +77,7 @@ var JUnitChartBuilder = function(slug) {
   }
 
   function generateBubbleChart() {
-    google.load("visualization", "1", {
-      packages: ["corechart"]
-    });
+
     google.setOnLoadCallback(drawSeriesChart);
 		console.log('[AAAAAAAAaaAaAAAaaaaaaaaaaaAaAaAaAaAaAaAasukztrertzjtrhAaAaAaAaAaAAAAAAAaaaaAaAaaAaAaAaAaAaAaAaAaA');
     function drawSeriesChart() {
@@ -153,7 +154,7 @@ var JUnitChartBuilder = function(slug) {
 	};
 
 	function generatePieChart1(){
-		google.load("visualization", "1.0", {packages: ["corechart"]});
+
     google.setOnLoadCallback(function() {
 			var data = [['Branch', 'Health']];
 
