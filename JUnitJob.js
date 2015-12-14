@@ -100,8 +100,3 @@ var JUnitJob = function(id) {
     return mock;
   }
 }
-
-function jUnitJobTest() {
-  var testJob = new JUnitJob(94661534);
-  console.log(testJob);
-}
