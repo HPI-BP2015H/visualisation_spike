@@ -128,9 +128,6 @@ function buildStateToBool(aState) {
 
 
 function correctWeekday(aWeekday) {
-  if (aWeekday == 0) {
-    return 6
-  } else {
-    return aWeekday - 1
-  }
+  var reverseDays = [0, 6, 5, 4, 3, 2, 1];
+  return reverseDays[aWeekday];
 }
