@@ -94,10 +94,14 @@ var JUnitChartBuilder = function(slug) {
     var options = {
       title: 'Correlation between commit date/time, number of failures and number of commits.',
       hAxis: {
-        title: 'Time'
+        title: 'Time',
+        minValue: 0,
+        maxValue: 24
       },
       vAxis: {
-        title: 'Weekday'
+        title: 'Weekday',
+        minValue: 0,
+        maxValue: 7
       },
       bubble: {
         textStyle: {
@@ -105,7 +109,8 @@ var JUnitChartBuilder = function(slug) {
         }
       },
       colorAxis: {
-        colors: ['green', 'red']
+        colors: ['green', 'yellow', 'red'],
+        minValue: 0
       }
     };
 
@@ -126,9 +131,7 @@ var JUnitChartBuilder = function(slug) {
     }
 
     var array = [
-      ['ID', 'Time', 'Weekday', 'numberOfFailures', 'numberofCommits'],
-      ['', 1, 6, 0, 0],
-      ['', 22, 1, 0, 0],
+      ['ID', 'Time', 'Weekday', 'numberOfFailures', 'numberofCommits']
     ];
     var weekday = null;
     var time = null;
