@@ -129,14 +129,14 @@ var JUnitChartBuilder = function(slug) {
       },
       colorAxis: {
         colors: ['green', 'yellow', 'red'],
-        minValue: 0
+        minValue: 0,
+        maxValue: 100
       }
     };
 
     var chart = new google.visualization.BubbleChart(document.getElementById('bubble_chart'));
     chart.draw(data, options);
 
-    //naming stuffs
 
 
 
@@ -183,6 +183,11 @@ var JUnitChartBuilder = function(slug) {
         a.push(1);
         array.push(a);
       }
+    }
+    for (var i = 1; i < array.length; i++) {
+      var percentageOfFailures = array[i][3] / array[i][4];
+      console.log(array[i][3], ' / ', array[i][4], ' = ', percentageOfFailures);
+      array[i][3] = percentageOfFailures;
     }
     return array;
   };
