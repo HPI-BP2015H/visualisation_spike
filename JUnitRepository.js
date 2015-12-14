@@ -1,4 +1,4 @@
-var JUnitRepository = function(slug, cb) {
+var JUnitRepository = function(slug, callback) {
   var self = this;
 
   // variables
@@ -18,7 +18,7 @@ var JUnitRepository = function(slug, cb) {
         self.branches.push(new JUnitBranch(self.slug, travisBranches[i].name, function () {
           doneCount++;
           if (doneCount == travisBranches.length) {
-            //setTimeout(cb, 5000);
+            callback();
           }
         }));
       }

@@ -1,4 +1,4 @@
-var JUnitJob = function(id) {
+var JUnitJob = function(id, callback) {
   var self = this;
 
   // variables
@@ -24,6 +24,7 @@ var JUnitJob = function(id) {
     var apiPath = "https://api.travis-ci.org/v3/job/" + self.id.toString();
     getResultFromTravisAPI(apiPath, function(data) {
       self.status = data.state;
+      callback();
     });
   }
 

@@ -1,4 +1,4 @@
-var JUnitBuild = function(travisBuildObject, slug) {
+ var JUnitBuild = function(travisBuildObject, slug, callback) {
   var self = this;
 
   // variables
@@ -22,8 +22,14 @@ var JUnitBuild = function(travisBuildObject, slug) {
 
   function getJobs() {
     var j = [];
+    var doneCount=0;
     for (var i = 0; i < travisBuildObject.jobs.length; i++) {
-      j.push(new JUnitJob(travisBuildObject.jobs[i].id));
+      j.push(new JUnitJob(travisBuildObject.jobs[i].id, function(){
+        doneCount++;
+        if (doneCount == travisBuildObject.jobs.length) {
+          callback();
+        }
+      }));
     }
     return j;
   }
