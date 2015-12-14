@@ -25,7 +25,7 @@ var JUnitChartBuilder = function(slug) {
     }
 
     google.load("visualization", "1.0", {
-      packages: ["corechart", "bar"],
+      packages: ["corechart"],
       callback: function() {
         generateStackedAreaChart(stackedAreaData);
         generateBubbleChart();
@@ -204,24 +204,26 @@ var JUnitChartBuilder = function(slug) {
       data.push([self.repo.branches[i].name, health, percentageToTestColor(health*100)]);
     }
 
+    data.sort(function(a, b) {
+      return b[1] - a[1];
+    });
+
+    console.log(data);
     var options = {
-      height: self.repo.branches.length * 20 + 80,
+      height: self.repo.branches.length * 35 + 35,
       bars: 'horizontal',
-      chart: {
-        title: 'Branch Health'
-      },
+      title: 'Branch Health',
       hAxis: {
         format: "percent",
+        gridlines: {
+          count: 11
+        },
         viewWindow: {
           max:1,
           min:0
-        }
-      },
-      axes: {
-        x: {
-          0: {
-            side: 'top'
-          }
+        },
+        textStyle: {
+          bold: false
         }
       },
       legend: {
@@ -229,8 +231,8 @@ var JUnitChartBuilder = function(slug) {
       }
     };
 
-    var chart = new google.charts.Bar(document.getElementById('branch_health'));
-    chart.draw(google.visualization.arrayToDataTable(data), google.charts.Bar.convertOptions(options));
+    var chart = new google.visualization.BarChart(document.getElementById('branch_health'));
+    chart.draw(google.visualization.arrayToDataTable(data), options);
 
   }
 
