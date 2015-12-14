@@ -125,3 +125,12 @@ function buildStateToBool(aState) {
     return false;
   }
 }
+
+
+function correctWeekday(aWeekday) {
+  if (aWeekday == 0) {
+    return 6
+  } else {
+    return aWeekday - 1
+  }
+}
