@@ -6,19 +6,9 @@
   this.slug = slug;
   this.jobs = getJobs();
 
-  // Retrieve values via REST API.
-  this.commitTime = getCommitTime();
-  this.committerName = getCommitterName();
-  this.status = getStatus();
-
   //just a fix. later in the values below will be aquired through this.jobs
   var jDOM = 0;
-  // Aggregate values from JUnitJobs.
-  this.time = getBuildTime();
-  this.testcaseCount = getTestcaseCount();
-  this.failCount = getFailCount();
-  this.passCount = getPassCount();
-  this.errorCount = getErrorCount();
+
 
   function getJobs() {
     var j = [];
@@ -27,6 +17,18 @@
       j.push(new JUnitJob(travisBuildObject.jobs[i].id, function(){
         doneCount++;
         if (doneCount == travisBuildObject.jobs.length) {
+          // Retrieve values via REST API.
+          self.commitTime = getCommitTime();
+          self.committerName = getCommitterName();
+          self.status = getStatus();
+
+          // Aggregate values from JUnitJobs.
+          self.time = getBuildTime();
+          self.testcaseCount = getTestcaseCount();
+          self.failCount = getFailCount();
+          self.passCount = getPassCount();
+          self.errorCount = getErrorCount();
+
           callback();
         }
       }));
@@ -53,27 +55,42 @@
   }
 
   function getBuildTime() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].time;
+    }
+    return result;
   }
 
   function getTestcaseCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].testcaseCount;
+    }
+    return result;
   }
 
   function getFailCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].failCount;
+    }
+    return result;
   }
 
   function getPassCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].passCount;
+    }
+    return result;
   }
 
   function getErrorCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].errorCount;
+    }
+    return result;
   }
 }
