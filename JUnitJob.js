@@ -40,22 +40,17 @@ var JUnitJob = function(id, callback) {
     getResultViaAjax(apiPath, function(data) {
 
       if(data != undefined) {
-
         self.log = data;
         self.os            = getOS();
         self.env           = getEnv();
-
         var parser = new DOMParser();
         jUnitDOM   = parser.parseFromString(getXML(), "text/xml");
-        doneCount++;
-        if(doneCount >= 2) {
-            createTestsuites();
-        }
-      }else{
-        doneCount++;
-        if(doneCount >= 2) {
-            callback();
-        }
+        createTestsuites();
+      }
+
+      doneCount++;
+      if(doneCount >= 2) {
+          callback();
       }
     }, "text", {});
   }
@@ -91,26 +86,6 @@ var JUnitJob = function(id, callback) {
     return env;
   }
 
-  function getJobTime() {
-    return parseFloat(jUnitDOM.documentElement.getAttribute("time"));
-  }
-
-  function getTestcaseCount() {
-    return parseFloat(jUnitDOM.documentElement.getAttribute("tests"));
-  }
-
-  function getFailCount() {
-    return parseFloat(jUnitDOM.documentElement.getAttribute("failures"));
-  }
-
-  function getPassCount() {
-    return (getTestcaseCount(jUnitDOM) - getFailCount(jUnitDOM));
-  }
-
-  function getErrorCount() {
-    return parseFloat(jUnitDOM.documentElement.getAttribute("errors"));
-  }
-
   function getXML() {
     // TODO: Find XML in log and return it.
     var mock = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>';
@@ -120,13 +95,14 @@ var JUnitJob = function(id, callback) {
   function createTestsuites() {
     var jUnitTestsuites = jUnitDOM.getElementsByTagName("testsuite");
     for(var i = 0; i < jUnitTestsuites.length; i++) {
-      self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i]));
+      var newSuite=new JUnitTestSuite(jUnitTestsuites[i]);
+      self.testsuites.push(newSuite);
+
+      self.time           +=newSuite.time;
+      self.testcaseCount  +=newSuite.testcaseCount;
+      self.failCount      +=newSuite.failCount;
+      self.passCount      +=newSuite.passCount;
+      self.errorCount     +=newSuite.errorCount;
     }
-    self.time          = getJobTime();
-    self.testcaseCount = getTestcaseCount();
-    self.failCount     = getFailCount();
-    self.passCount     = getPassCount();
-    self.errorCount    = getErrorCount();
-    callback();
   }
 }
