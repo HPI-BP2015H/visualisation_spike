@@ -153,7 +153,7 @@ var JUnitChartBuilder = function(slug) {
     }
 
     var array = [
-      ['ID', 'Time', 'Weekday', 'percentageOfFailures', 'numberofCommits']
+      ['ID', 'time', 'weekday', 'percentage Of failures', 'number of commits']
     ];
     var weekday = null;
     var time = null;
