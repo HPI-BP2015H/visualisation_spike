@@ -208,6 +208,7 @@ var JUnitChartBuilder = function(slug) {
     }
 
     var options = {
+      height: self.repo.branches.length * 20 + 80,
       bars: 'horizontal',
       chart: {
         title: 'Branch Health'
