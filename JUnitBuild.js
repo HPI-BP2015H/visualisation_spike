@@ -41,7 +41,7 @@
   }
 
   function getCommitterName() {
-    var apiPath = "https://api.github.com/repos/" + githubCompatibleSlug(this.slug) + "/commits/" + travisBuildObject.commit.sha;
+    var apiPath = "https://api.github.com/repos/" + githubCompatibleSlug(self.slug) + "/commits/" + travisBuildObject.commit.sha;
     var res = getResultFromGithubAPI(apiPath);
     if (res) {
       return res.commit.committer.name;

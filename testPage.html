@@ -14,19 +14,19 @@
     <script type="text/javascript" src="JUnitTestSuite.js"> </script>
     <script type="text/javascript" src="JUnitTestCase.js"> </script>
     <script type="text/javascript" src="JUnitChartBuilder.js"> </script>
-    <script type="text/javascript">
-      //var slug = "HPI-BP2015H%2FSWT-Demo"
-      var slug = "hpi-swt2%2Fwimi-portal"
-      var chartsBuilder = new JUnitChartBuilder(slug);
-      console.log(chartsBuilder);
-    </script>
   </head>
   <body>
-
     <div style="padding: 3%;">
+      <h1>Slug: <input type="text" name="slug" id="slugInput" value="hpi-swt2%2Fwimi-portal"> <input type="submit" value="Generate Charts" id="generateCharts">
       <div id="stackedAreaChart" style="height: 400px;"></div>
       <div id="bubble_chart" style="height: 500px;"></div>
       <div id="branch_health"></div>
     </div>
   </body>
+  <script type="text/javascript">
+    $("#generateCharts").click(function() {
+      console.log("Start");
+      new JUnitChartBuilder($("#slugInput").val());
+    });
+  </script>
 </html>
