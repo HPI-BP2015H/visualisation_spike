@@ -13,6 +13,7 @@ function getResultViaAjax(anAPIPath, completionBlock, dataType, header) {
       console.log("[FAILED] getting result from: " + anAPIPath);
       console.log("Status: " + status);
       console.log(jqXHR);
+      completionBlock();
     }
   });
 };
