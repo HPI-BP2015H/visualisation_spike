@@ -133,16 +133,20 @@ function correctWeekday(aWeekday) {
 }
 
 function percentageToTestColor(percent) {
-  var green = 0;
-  var red   = 0;
-  if(percent >= 50) {
-    green = 255;
-    red = 255 * (-(1/50) * percent + 2);
+  var green = 0.0;
+  var red   = 0.0;
+
+  if(percent > 100.0) { return "#00ff00"}
+  if(percent <   0.0) { return "#ff0000"}
+
+  if(percent >= 50.0) {
+    green = 255.0;
+    red = 255.0 * (-(1.0/50.0) * percent + 2.0);
   } else {
-    green = 255 * ((1/50) * percent);
-    red = 255;
+    green = 255.0 * ((1.0/50.0) * percent);
+    red = 255.0;
   }
-  return rgbToHex(red, green, 0);
+  return rgbToHex(round(red), round(green), 0);
 }
 
 function componentToHex(c) {
