@@ -6,13 +6,11 @@ function getResultViaAjax(anAPIPath, completionBlock, dataType, header) {
     url: anAPIPath,
     headers: header,
     success: function(data, status, jqXHR) {
-      console.log("[DONE] getting result from " + anAPIPath);
+      // console.log("[DONE] getting result from " + anAPIPath);
       completionBlock(data);
     },
     error: function(jqXHR, status) {
       console.log("[FAILED] getting result from: " + anAPIPath);
-      console.log("Status: " + status);
-      console.log(jqXHR);
       completionBlock();
     }
   });

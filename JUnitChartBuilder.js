@@ -1,10 +1,7 @@
 var JUnitChartBuilder = function(slug) {
-
   var self = this;
-  //document.getElementById("title").innerHTML = slug;
 
   this.repo = new JUnitRepository(slug, generateCharts);
-
 
   function generateCharts() {
     console.log("generateCharts");
@@ -190,7 +187,7 @@ var JUnitChartBuilder = function(slug) {
   function generateBranchHealthChart() {
 
     var data = [
-      ['Branch', 'Health']
+      ['Branch', 'Health', { role: "style" }]
     ];
 
     for (var i = 0; i < self.repo.branches.length; i++) {
@@ -204,7 +201,7 @@ var JUnitChartBuilder = function(slug) {
       if(self.repo.branches[i].builds.length > 0) {
         health = (passes) / (self.repo.branches[i].builds.length);
       }
-      data.push([self.repo.branches[i].name, health])
+      data.push([self.repo.branches[i].name, health, percentageToTestColor(health*100)]);
     }
 
     var options = {
