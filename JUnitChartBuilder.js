@@ -91,17 +91,36 @@ var JUnitChartBuilder = function(slug) {
 	]);*/
     var data = google.visualization.arrayToDataTable(getAllCommitsWithDate());
 
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+
     var options = {
       title: 'Correlation between commit date/time, number of failures and number of commits.',
       hAxis: {
-        title: 'Time',
+        title: 'Time of Day',
         minValue: 0,
         maxValue: 24
       },
       vAxis: {
         title: 'Weekday',
         minValue: 0,
-        maxValue: 7
+        maxValue: 6,
+        ticks: [ { v: 0, f: weekday[0]},
+        { v: 1, f: weekday[1]},
+        { v: 2, f: weekday[2]},
+        { v: 3, f: weekday[3]},
+        { v: 4, f: weekday[4]},
+        { v: 5, f: weekday[5]},
+        { v: 6, f: weekday[6]}
+       ]
+
       },
       bubble: {
         textStyle: {
@@ -114,8 +133,14 @@ var JUnitChartBuilder = function(slug) {
       }
     };
 
-    var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+    var chart = new google.visualization.BubbleChart(document.getElementById('bubble_chart'));
     chart.draw(data, options);
+
+    //naming stuffs
+
+
+
+
   }
 
 

@@ -11,20 +11,19 @@
     <script type="text/javascript" src="JUnitBranch.js"> </script>
     <script type="text/javascript" src="JUnitBuild.js"> </script>
     <script type="text/javascript" src="JUnitJob.js"> </script>
-        <script type="text/javascript" src="JUnitChartBuilder.js"> </script>
+    <script type="text/javascript" src="JUnitChartBuilder.js"> </script>
     <script type="text/javascript">
-      var slug = "HPI-BP2015H%2FSWT-Demo"
-
-      var chartsBuilder = new JUnitChartBuilder("HPI-BP2015H%2FSWT-Demo");
+      //var slug = "HPI-BP2015H%2FSWT-Demo"
+      var slug = "HPI-BP2015H%2Fvisualisation_spike"
+      var chartsBuilder = new JUnitChartBuilder(slug);
       console.log(chartsBuilder);
     </script>
   </head>
   <body>
-    <div id="title"></div>
 
 
     <div id="stackedAreaChart" style="height: 400px;"></div>
-    <div id="series_chart_div" style="height: 500px;"></div>
+    <div id="bubble_chart" style="height: 500px;"></div>
     <div id="pieChart1" style="height: 500px;"></div>
   </body>
 </html>
