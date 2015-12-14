@@ -28,11 +28,11 @@ var JUnitChartBuilder = function(slug) {
     }
 
     google.load("visualization", "1.0", {
-      packages: ["corechart"],
+      packages: ["corechart", "bar"],
       callback: function() {
         generateStackedAreaChart(stackedAreaData);
         generateBubbleChart();
-        generatePieChart1();
+        generateBranchHealthChart();
       }
     });
   }
@@ -137,10 +137,6 @@ var JUnitChartBuilder = function(slug) {
     var chart = new google.visualization.BubbleChart(document.getElementById('bubble_chart'));
     chart.draw(data, options);
 
-
-
-
-
   }
 
 
@@ -192,7 +188,7 @@ var JUnitChartBuilder = function(slug) {
     return array;
   };
 
-  function generatePieChart1() {
+  function generateBranchHealthChart() {
 
     var data = [
       ['Branch', 'Health']
@@ -202,20 +198,42 @@ var JUnitChartBuilder = function(slug) {
       var passes = 0;
       for (var j = 0; j < self.repo.branches[i].builds.length; j++) {
         if (self.repo.branches[i].builds[j].status == "passed") {
-          passes = passes + 100;
+          passes = passes + 1;
         }
       }
-      var health = (passes) / (self.repo.branches[i].builds.length);
+      var health = 0;
+      if(self.repo.branches[i].builds.length > 0) {
+        health = (passes) / (self.repo.branches[i].builds.length);
+      }
       data.push([self.repo.branches[i].name, health])
     }
 
     var options = {
-      title: 'Branch Health',
-      pieSliceText: "value"
+      bars: 'horizontal',
+      chart: {
+        title: 'Branch Health'
+      },
+      hAxis: {
+        format: "percent",
+        viewWindow: {
+          max:1,
+          min:0
+        }
+      },
+      axes: {
+        x: {
+          0: {
+            side: 'top'
+          }
+        }
+      },
+      legend: {
+        position: "none"
+      }
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('pieChart1'));
-    chart.draw(google.visualization.arrayToDataTable(data), options);
+    var chart = new google.charts.Bar(document.getElementById('branch_health'));
+    chart.draw(google.visualization.arrayToDataTable(data), google.charts.Bar.convertOptions(options));
 
   }
 
