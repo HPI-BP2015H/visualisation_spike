@@ -27,6 +27,27 @@ wer fixt die meisten tests
 
 welches wort kommt am häufigsten in namen von tests vor die failen
 
+-----
+Experteninterview mit Jens
+-----
+
+gesamtzahl der tests
+
+ist das hot oder schon alt?
+
+arbeiten da viele verschiedene leute dran
+
+was ist stable/aktuell, wo dran wird entwickelt?
+
+arbeiten alle an einem?
+
+gibt es immer den selbe nstabilen Branch
+
+wird nur commited wenn die tests auch durchlauufen
+
+
+
+
 
 
 ------------------------------------------------------------------------------------------------
