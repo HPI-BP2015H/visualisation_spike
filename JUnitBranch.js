@@ -1,5 +1,5 @@
 var JUnitBranch = function(slug, branchName, cb) {
-
+  var self=this;
   //variables
 
   this.slug = slug;
@@ -8,19 +8,17 @@ var JUnitBranch = function(slug, branchName, cb) {
 
   // init
 
-  loadBuilds(this);
+  loadBuilds();
 
   // private
 
-  function loadBuilds(branch) {
-    var apiPath = "https://api.travis-ci.org/v3/repo/" + branch.slug + "/builds?branch.name=" + branch.name;
+  function loadBuilds() {
+    var apiPath = "https://api.travis-ci.org/v3/repo/" + self.slug + "/builds?branch.name=" + self.name;
     getResultFromTravisAPI(apiPath, function(data) {
-      var builds = [];
       var travisBuilds = data.builds;
       for (var i = 0; i < travisBuilds.length; i++) {
-        builds.push(new JUnitBuild(travisBuilds[i], branch.slug));
+        self.builds.push(new JUnitBuild(travisBuilds[i], self.slug));
       }
-      branch.builds = builds;
       cb();
     });
   }

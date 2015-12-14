@@ -1,5 +1,7 @@
  
 var JUnitBuild = function(travisBuildObject, slug) {
+  var self=this;
+
   this.id = travisBuildObject.id;
   this.slug = slug;
   this.jobs = getJobs();
@@ -12,16 +14,16 @@ var JUnitBuild = function(travisBuildObject, slug) {
   //just a fix. later in the values below will be aquired through this.jobs
   var jDOM = 0;
   // Aggregate values from JUnitJobs.
-  this.time = getBuildTime(jDOM);
-  this.testcaseCount = getTestcaseCount(jDOM);
-  this.failCount = getFailCount(jDOM);
-  this.passCount = getPassCount(jDOM);
-  this.errorCount = getErrorCount(jDOM);
+  this.time = getBuildTime();
+  this.testcaseCount = getTestcaseCount();
+  this.failCount = getFailCount();
+  this.passCount = getPassCount();
+  this.errorCount = getErrorCount();
 
   function getJobs() {
     var j = [];
     for (var i = 0; i < travisBuildObject.jobs.length; i++) {
-    //  j.push(new JUnitJob(travisBuildObject.jobs[i].id));
+      j.push(new JUnitJob(travisBuildObject.jobs[i].id));
     }
     return j;
   }
@@ -44,27 +46,27 @@ var JUnitBuild = function(travisBuildObject, slug) {
     return travisBuildObject.state;
   }
 
-  function getBuildTime(jDOM) {
+  function getBuildTime() {
     // TODO: Implement.
     return 0;
   }
 
-  function getTestcaseCount(jDOM) {
+  function getTestcaseCount() {
     // TODO: Implement.
     return 0;
   }
 
-  function getFailCount(jDOM) {
+  function getFailCount() {
     // TODO: Implement.
     return 0;
   }
 
-  function getPassCount(jDOM) {
+  function getPassCount() {
     // TODO: Implement.
     return 0;
   }
 
-  function getErrorCount(jDOM) {
+  function getErrorCount() {
     // TODO: Implement.
     return 0;
   }
