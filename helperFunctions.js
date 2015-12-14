@@ -144,7 +144,7 @@ function percentageToTestColor(percent) {
     green = 255.0 * ((1.0/50.0) * percent);
     red = 255.0;
   }
-  return rgbToHex(round(red), round(green), 0);
+  return rgbToHex(Math.round(red), Math.round(green), 0);
 }
 
 function componentToHex(c) {
