@@ -12,7 +12,10 @@ var JUnitTestSuite = function(jUnitDOMSubtree){
   this.errorCount = getErrorCount();
 
   function createTestcases() {
-    // TODO: Implement.
+    var jUnitTestcases = jUnitDOMSubtree.getElementsByTagName("testcase");
+    for(var i = 0; i < jUnitTestcases.length; i++) {
+      self.testcases.push(new JUnitTestCase(jUnitTestcases[i]));
+    }
   }
 
   function getName() {
