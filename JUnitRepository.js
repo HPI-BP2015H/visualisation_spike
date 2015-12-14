@@ -12,15 +12,19 @@ var JUnitRepository = function(slug, callback) {
   function loadBranches() {
     var apiPath = "https://api.travis-ci.org/v3/repo/" + self.slug + "/branches";
     getResultFromTravisAPI(apiPath, function(data) {
-      var travisBranches = data.branches;
-      var doneCount = 0;
-      for (var i = 0; i < travisBranches.length; i++) {
-        self.branches.push(new JUnitBranch(self.slug, travisBranches[i].name, function () {
-          doneCount++;
-          if (doneCount == travisBranches.length) {
-            callback();
-          }
-        }));
+      if(data == undefined) {
+        callback();
+      } else {
+        var travisBranches = data.branches;
+        var doneCount = 0;
+        for (var i = 0; i < travisBranches.length; i++) {
+          self.branches.push(new JUnitBranch(self.slug, travisBranches[i].name, function () {
+            doneCount++;
+            if (doneCount == travisBranches.length) {
+              callback();
+            }
+          }));
+        }
       }
     });
   }
