@@ -129,7 +129,8 @@ var JUnitChartBuilder = function(slug) {
       },
       colorAxis: {
         colors: ['green', 'yellow', 'red'],
-        minValue: 0
+        minValue: 0,
+        maxValue: 100
       }
     };
 
@@ -146,7 +147,6 @@ var JUnitChartBuilder = function(slug) {
 
 
   function getAllCommitsWithDate() { //for all branches
-    console.log('[AAAAAAAAaaAaAAAaaaaaaaaaaaAaAaAaAaAaAaAaAaAaAaAaAaAAAAAAAaaaaAaAaaAaAaAaAaAaAaAaAaA');
 
     var builds = [];
     for (var i = 0; i < self.repo.branches.length; i++) {
@@ -183,6 +183,11 @@ var JUnitChartBuilder = function(slug) {
         a.push(1);
         array.push(a);
       }
+    }
+    for (var i = 1; i < array.length; i++) {
+      var percentageOfFailures = array[i][3] / array[i][4];
+      console.log(array[i][3], ' / ', array[i][4], ' = ', percentageOfFailures);
+      array[i][3] = percentageOfFailures;
     }
     return array;
   };
