@@ -5,9 +5,6 @@ var JUnitChartBuilder = function(slug) {
 
   this.repo = new JUnitRepository(slug, generateCharts);
 
-  setTimeout(function() {
-    generateCharts();
-  }, 5000);
 
   function generateCharts() {
     console.log("generateCharts");
