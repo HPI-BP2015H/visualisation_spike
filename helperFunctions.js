@@ -1,13 +1,10 @@
-function getResultFromTravisAPI(anAPIPath, completionBlock) {
+function getResultViaAjax(anAPIPath, completionBlock, dataType, header) {
   jQuery.ajax({
     method: "GET", // default
     async: true, // default
-    dataType: "json",
+    dataType: dataType,
     url: anAPIPath,
-    headers: {
-      "Travis-API-Version": "3",
-      //"User-Agent": "Travis-Visualisation"
-    },
+    headers: header,
     success: function(data, status, jqXHR) {
       console.log("[DONE] getting result from " + anAPIPath);
       completionBlock(data);
@@ -19,6 +16,14 @@ function getResultFromTravisAPI(anAPIPath, completionBlock) {
     }
   });
 };
+
+function getResultFromTravisAPI(anAPIPath, completionBlock) {
+  var header = {
+    "Travis-API-Version": "3",
+    //"User-Agent": "Travis-Visualisation"
+  };
+  getResultViaAjax(anAPIPath, completionBlock, "json", header);
+}
 
 function getResultFromGithubAPI(anAPIPath) {
   $.ajaxSetup({
