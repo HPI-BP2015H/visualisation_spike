@@ -6,23 +6,19 @@ var JUnitTestCase = function(jUnitDOMSubtree){
   this.classname = getClassname();
 
   function getTime(){
-    // TODO: Implement.
-    return 0.0;
+    return jUnitDOMSubtree.getAttribute("time");
   }
 
   function getName(){
-    // TODO: Implement.
-    return "";
+    return jUnitDOMSubtree.getAttribute("name");
   }
 
   function getStatus(){
-    // TODO: Implement.
-    return "error";
+    return jUnitDOMSubtree.getAttribute("status");
   }
 
   function getClassname(){
-    // TODO: Implement.
-    return "";
+    return jUnitDOMSubtree.getAttribute("classname");
   }
 
 }
