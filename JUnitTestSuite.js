@@ -1,17 +1,17 @@
-var JUnitTestSuite = function(log){
-	
+var JUnitTestSuite = function(xml){
+
 	this.failCount = setFailCount();
 	this.passCount = setPassCount();
 	this.errorCount = setErrorCount();
-	
+
 
 	function setFailCount(){
-	//TODO	
+	//TODO
 	return 0;
 	}
 
 	function setPassCount(){
-	//TODO 
+	//TODO
 	return 0;
 	}
 
