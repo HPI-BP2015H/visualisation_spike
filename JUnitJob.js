@@ -14,6 +14,7 @@ var JUnitJob = function(id, callback) {
   this.errorCount     = 0;
 
   var jUnitDOM        = "";
+  var doneCount       = 0;
 
   // init
   loadStatus();
@@ -24,7 +25,10 @@ var JUnitJob = function(id, callback) {
     var apiPath = "https://api.travis-ci.org/v3/job/" + self.id.toString();
     getResultFromTravisAPI(apiPath, function(data) {
       self.status = data.state;
-      callback();
+      doneCount++;
+      if(doneCount >= 2) {
+          callback();
+      }
     });
   }
 
@@ -34,17 +38,22 @@ var JUnitJob = function(id, callback) {
 
       self.log = data;
 
-      this.os            = getOS();
-      this.env           = getEnv();
+      self.os            = getOS();
+      self.env           = getEnv();
 
       var parser = new DOMParser();
       jUnitDOM   = parser.parseFromString(getXML, "text/xml");
 
-      this.time          = getJobTime();
-      this.testcaseCount = getTestcaseCount();
-      this.failCount     = getFailCount();
-      this.passCount     = getPassCount();
-      this.errorCount    = getErrorCount();
+      self.time          = getJobTime();
+      self.testcaseCount = getTestcaseCount();
+      self.failCount     = getFailCount();
+      self.passCount     = getPassCount();
+      self.errorCount    = getErrorCount();
+
+      doneCount++;
+      if(doneCount >= 2) {
+          callback();
+      }
 
     }, "text", {});
   }
