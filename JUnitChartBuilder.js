@@ -39,7 +39,7 @@ var JUnitChartBuilder = function(slug) {
 
 
   function generateStackedAreaChart(dataArray) {
-    console.log("tyrsyrysryrdsytd");
+    console.log("function generateStackedAreaChart(dataArray) called");
     // Just a mock-up right now.
 
 
@@ -146,7 +146,7 @@ var JUnitChartBuilder = function(slug) {
 
 
   function getAllCommitsWithDate() { //for all branches
-    console.log('[AAAAAAAAaaAaAAAaaaaaaaaaaaAaAaAaAaAaAaAaAaAaAaAaAaAAAAAAAaaaaAaAaaAaAaAaAaAaAaAaAaA');
+    console.log("function getAllCommitsWithDate() called");
 
     var builds = [];
     for (var i = 0; i < self.repo.branches.length; i++) {
