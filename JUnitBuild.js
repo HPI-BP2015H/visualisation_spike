@@ -1,7 +1,7 @@
- 
-var JUnitBuild = function(travisBuildObject, slug, callback) {
-  var self=this;
+ var JUnitBuild = function(travisBuildObject, slug, callback) {
+  var self = this;
 
+  // variables
   this.id = travisBuildObject.id;
   this.slug = slug;
   this.jobs = getJobs();

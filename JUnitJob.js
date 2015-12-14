@@ -1,29 +1,25 @@
 var JUnitJob = function(id, callback) {
   var self = this;
-  //variables
 
-  this.id = id;
+  // variables
+  this.id             = id;
+  this.status         = "";
+  this.log            = "";
+  this.os             = "";
+  this.env            = "";
+  this.time           = 0;
+  this.testcaseCount  = 0;
+  this.failCount      = 0;
+  this.passCount      = 0;
+  this.errorCount     = 0;
+
+  var jUnitDOM        = "";
 
   // init
-  this.status="";
   loadStatus();
-  this.status;
-  this.log    = getLog();
+  loadLog();
 
-  // Retrieve and parse JUnitXML.
-  var jUnitXML = getXML();
-  var jParser  = new DOMParser();
-  var jDOM     = jParser.parseFromString(jUnitXML, "text/xml");
-
-  // Generate values from JUnitXML.
-  this.os            = getOS();
-  this.env           = getEnv();
-  this.time          = getJobTime();
-  this.testcaseCount = getTestcaseCount();
-  this.failCount     = getFailCount();
-  this.passCount     = getPassCount();
-  this.errorCount    = getErrorCount();
-
+  // private
   function loadStatus() {
     var apiPath = "https://api.travis-ci.org/v3/job/" + self.id.toString();
     getResultFromTravisAPI(apiPath, function(data) {
@@ -32,17 +28,25 @@ var JUnitJob = function(id, callback) {
     });
   }
 
-  function getLog() {
-    $.ajaxSetup({async: false});
-    var log = "";
-    jQuery.get(
-      "https://s3.amazonaws.com/archive.travis-ci.org/jobs/" + self.id.toString() + "/log.txt",
-      function(data) {
-        log = data;
-      },
-      'text'
-    );
-    return log;
+  function loadLog() {
+    var apiPath = "https://s3.amazonaws.com/archive.travis-ci.org/jobs/" + self.id.toString() + "/log.txt";
+    getResultViaAjax(apiPath, function(data) {
+
+      self.log = data;
+
+      this.os            = getOS();
+      this.env           = getEnv();
+
+      var parser = new DOMParser();
+      jUnitDOM   = parser.parseFromString(getXML, "text/xml");
+
+      this.time          = getJobTime();
+      this.testcaseCount = getTestcaseCount();
+      this.failCount     = getFailCount();
+      this.passCount     = getPassCount();
+      this.errorCount    = getErrorCount();
+
+    }, "text", {});
   }
 
   function getOS() {
@@ -77,23 +81,23 @@ var JUnitJob = function(id, callback) {
   }
 
   function getJobTime() {
-    return parseFloat(jDOM.documentElement.getAttribute("time"));
+    return parseFloat(jUnitDOM.documentElement.getAttribute("time"));
   }
 
   function getTestcaseCount() {
-    return parseFloat(jDOM.documentElement.getAttribute("tests"));
+    return parseFloat(jUnitDOM.documentElement.getAttribute("tests"));
   }
 
   function getFailCount() {
-    return parseFloat(jDOM.documentElement.getAttribute("failures"));
+    return parseFloat(jUnitDOM.documentElement.getAttribute("failures"));
   }
 
   function getPassCount() {
-    return (getTestcaseCount(jDOM) - getFailCount(jDOM));
+    return (getTestcaseCount(jUnitDOM) - getFailCount(jUnitDOM));
   }
 
   function getErrorCount() {
-    return parseFloat(jDOM.documentElement.getAttribute("errors"));
+    return parseFloat(jUnitDOM.documentElement.getAttribute("errors"));
   }
 
   function getXML() {
@@ -101,4 +105,5 @@ var JUnitJob = function(id, callback) {
     var mock = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>';
     return mock;
   }
+
 }
