@@ -205,7 +205,8 @@ var JUnitChartBuilder = function(slug) {
     }
 
     var options = {
-      title: 'Branch Health'
+      title: 'Branch Health',
+      pieSliceText: "value"
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('pieChart1'));
