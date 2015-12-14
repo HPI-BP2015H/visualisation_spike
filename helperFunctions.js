@@ -131,3 +131,25 @@ function correctWeekday(aWeekday) {
   var reverseDays = [0, 6, 5, 4, 3, 2, 1];
   return reverseDays[aWeekday];
 }
+
+function percentageToTestColor(percent) {
+  var green = 0;
+  var red   = 0;
+  if(percent >= 50) {
+    green = 255;
+    red = 255 * (-(1/50) * percent + 2);
+  } else {
+    green = 255 * ((1/50) * percent);
+    red = 255;
+  }
+  return rgbToHex(red, green, 0);
+}
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
