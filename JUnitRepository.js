@@ -1,12 +1,11 @@
 var JUnitRepository = function(slug, cb) {
   var self = this;
-  
+
   //variables
   this.slug = slug;
   this.branches = [];
 
   // init
-
   loadBranches();
 
   //private
