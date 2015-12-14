@@ -125,3 +125,9 @@ function buildStateToBool(aState) {
     return false;
   }
 }
+
+
+function correctWeekday(aWeekday) {
+  var reverseDays = [0, 6, 5, 4, 3, 2, 1];
+  return reverseDays[aWeekday];
+}

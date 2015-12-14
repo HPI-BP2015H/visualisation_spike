@@ -1,28 +1,24 @@
-var JUnitTestCase = function(xml){
-	
-	this.time = setTestTime();
-	this.testClassName = setTestClassName();
-	this.testName = setTestName();
-	this.testStatus = setTestStatus();
+var JUnitTestCase = function(jUnitDOMSubtree){
 
-	function setTestTime(){
-	//TODO
-	return 0.2;
-	}
-	
-	function setTestClassName(){
-	//TODO
-	return 0;
-	}
-	
-	function setTestName(){
-	//TODO 
-	return 0;
-	}
+  this.time = getTime();
+  this.name = getName();
+  this.status = getStatus();
+  this.classname = getClassname();
 
-	function setTestStatus(){
-	//TODO
-	return "error";
-	}
+  function getTime(){
+    return jUnitDOMSubtree.getAttribute("time");
+  }
+
+  function getName(){
+    return jUnitDOMSubtree.getAttribute("name");
+  }
+
+  function getStatus(){
+    return jUnitDOMSubtree.getAttribute("status");
+  }
+
+  function getClassname(){
+    return jUnitDOMSubtree.getAttribute("classname");
+  }
 
 }

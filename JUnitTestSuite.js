@@ -1,24 +1,45 @@
-var JUnitTestSuite = function(xml){
+var JUnitTestSuite = function(jUnitDOMSubtree){
 
-	this.failCount = setFailCount();
-	this.passCount = setPassCount();
-	this.errorCount = setErrorCount();
+  var self = this;
 
+  this.testcases = [];
 
-	function setFailCount(){
-	//TODO
-	return 0;
-	}
+  this.name = getName();
+  this.time = getTime();
+  this.testcaseCount = getTestcaseCount();
+  this.failCount = getFailCount();
+  this.passCount = getPassCount();
+  this.errorCount = getErrorCount();
 
-	function setPassCount(){
-	//TODO
-	return 0;
-	}
+  function createTestcases() {
+    var jUnitTestcases = jUnitDOMSubtree.getElementsByTagName("testcase");
+    for(var i = 0; i < jUnitTestcases.length; i++) {
+      self.testcases.push(new JUnitTestCase(jUnitTestcases[i]));
+    }
+  }
 
-	function setErrorCount(){
-	//TODO
-	return 0;
-	}
+  function getName() {
+    return jUnitDOMSubtree.getAttribute("name");
+  }
 
+  function getTime() {
+    return jUnitDOMSubtree.getAttribute("time");
+  }
+
+  function getTestcaseCount() {
+    return jUnitDOMSubtree.getAttribute("tests");
+  }
+
+  function getFailCount(){
+    return jUnitDOMSubtree.getAttribute("failures");
+  }
+
+  function getPassCount(){
+    return (jUnitDOMSubtree.getAttribute("tests") - jUnitDOMSubtree.getAttribute("failures"));
+  }
+
+  function getErrorCount(){
+    return jUnitDOMSubtree.getAttribute("errors");
+  }
 
 }

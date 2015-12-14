@@ -2,6 +2,7 @@ var JUnitJob = function(id, callback) {
   var self = this;
 
   // variables
+  this.testsuites     = [];
   this.id             = id;
   this.status         = "";
   this.log            = "";
@@ -41,26 +42,21 @@ var JUnitJob = function(id, callback) {
       if(data != undefined) {
 
         self.log = data;
-
         self.os            = getOS();
         self.env           = getEnv();
 
         var parser = new DOMParser();
-        jUnitDOM   = parser.parseFromString(getXML, "text/xml");
-
-        self.time          = getJobTime();
-        self.testcaseCount = getTestcaseCount();
-        self.failCount     = getFailCount();
-        self.passCount     = getPassCount();
-        self.errorCount    = getErrorCount();
-
+        jUnitDOM   = parser.parseFromString(getXML(), "text/xml");
+        doneCount++;
+        if(doneCount >= 2) {
+            createTestsuites();
+        }
+      }else{
+        doneCount++;
+        if(doneCount >= 2) {
+            callback();
+        }
       }
-
-      doneCount++;
-      if(doneCount >= 2) {
-          callback();
-      }
-
     }, "text", {});
   }
 
@@ -121,4 +117,16 @@ var JUnitJob = function(id, callback) {
     return mock;
   }
 
+  function createTestsuites() {
+    var jUnitTestsuites = jUnitDOM.getElementsByTagName("testsuite");
+    for(var i = 0; i < jUnitTestsuites.length; i++) {
+      self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i]));
+    }
+    self.time          = getJobTime();
+    self.testcaseCount = getTestcaseCount();
+    self.failCount     = getFailCount();
+    self.passCount     = getPassCount();
+    self.errorCount    = getErrorCount();
+    callback();
+  }
 }

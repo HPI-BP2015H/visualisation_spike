@@ -1,0 +1,36 @@
+IDEAS FOR CHARTS
+
+------------------------------------------------------------------------------------------------
+OPEN
+------------------------------------------------------------------------------------------------
+
+
+laufzeitverteilung eines builds zb: wie viele tests brauchen 0-2sec , bzw wie viele 2-4 sec
+
+gesamte laufzeit aller tests über mehrere builds (timeline)
+
+Häufigkeit der fails pro test über mehrere builds zb test4 5 mal gefailed in letzten 8 builds
+
+stunden x commits mit information über teststatus
+
+pie chart - status der letzten x builds
+
+pie chart - status der tests in einem build (fail,pass,error)
+
+verhältnis laufzeit/status von test - avg pro build - veränderung des avg über builds
+
+failserien von tests über mehrere builds (gleicher test kaputt seit 30 builds)
+
+wer macht die meisten tests kaputt
+
+wer fixt die meisten tests
+
+welches wort kommt am häufigsten in namen von tests vor die failen
+
+
+
+------------------------------------------------------------------------------------------------
+DONE
+------------------------------------------------------------------------------------------------
+
+punchcard like github mit farben für tests ... vllt zw rot u grün interpolieren
