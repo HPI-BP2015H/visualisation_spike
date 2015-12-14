@@ -122,6 +122,11 @@ var JUnitJob = function(id, callback) {
     for(var i = 0; i < jUnitTestsuites.length; i++) {
       self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i]));
     }
+    self.time          = getJobTime();
+    self.testcaseCount = getTestcaseCount();
+    self.failCount     = getFailCount();
+    self.passCount     = getPassCount();
+    self.errorCount    = getErrorCount();
     callback();
   }
 }
