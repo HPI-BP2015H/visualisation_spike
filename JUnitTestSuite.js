@@ -1,24 +1,48 @@
-var JUnitTestSuite = function(xml){
+var JUnitTestSuite = function(jUnitDOMSubtree){
 
-	this.failCount = setFailCount();
-	this.passCount = setPassCount();
-	this.errorCount = setErrorCount();
+  var self = this;
 
+  this.testcases = [];
 
-	function setFailCount(){
-	//TODO
-	return 0;
-	}
+  this.name = getName();
+  this.time = getTime();
+  this.testcaseCount = getTestcaseCount();
+  this.failCount = getFailCount();
+  this.passCount = getPassCount();
+  this.errorCount = getErrorCount();
 
-	function setPassCount(){
-	//TODO
-	return 0;
-	}
+  function createTestcases() {
+    // TODO: Implement.
+  }
 
-	function setErrorCount(){
-	//TODO
-	return 0;
-	}
+  function getName() {
+    // TODO: Implement.
+    return "";
+  }
 
+  function getTime() {
+    // TODO. Implement.
+    return 0;
+  }
+
+  function getTestcaseCount() {
+    // TODO: Implement.
+    return 0;
+  }
+
+  function getFailCount(){
+    // TODO: Implement.
+    return 0;
+  }
+
+  function getPassCount(){
+    // TODO: Implement.
+    return 0;
+  }
+
+  function getErrorCount(){
+    // TODO: Implement.
+    return 0;
+  }
 
 }
