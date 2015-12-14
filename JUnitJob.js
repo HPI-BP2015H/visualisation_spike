@@ -42,29 +42,21 @@ var JUnitJob = function(id, callback) {
       if(data != undefined) {
 
         self.log = data;
-
         self.os            = getOS();
         self.env           = getEnv();
 
         var parser = new DOMParser();
         jUnitDOM   = parser.parseFromString(getXML(), "text/xml");
-
-        self.time          = getJobTime();
-        self.testcaseCount = getTestcaseCount();
-        self.failCount     = getFailCount();
-        self.passCount     = getPassCount();
-        self.errorCount    = getErrorCount();
-
-        createTestsuites();
+        doneCount++;
+        if(doneCount >= 2) {
+            createTestsuites();
+        }
+      }else{
+        doneCount++;
+        if(doneCount >= 2) {
+            callback();
+        }
       }
-
-      doneCount++;
-      if(doneCount >= 2) {
-          callback();
-      }
-
-      createTestsuites();
-
     }, "text", {});
   }
 
@@ -127,8 +119,19 @@ var JUnitJob = function(id, callback) {
 
   function createTestsuites() {
     var jUnitTestsuites = jUnitDOM.getElementsByTagName("testsuite");
+    var doneCount2=0;
     for(var i = 0; i < jUnitTestsuites.length; i++) {
-      self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i]));
+      self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i], function(){
+        doneCount2++
+        if(doneCount2 == jUnitTestsuites.length){
+          self.time          = getJobTime();
+          self.testcaseCount = getTestcaseCount();
+          self.failCount     = getFailCount();
+          self.passCount     = getPassCount();
+          self.errorCount    = getErrorCount();
+          callback();
+        }
+      }));
     }
   }
 }

@@ -9,12 +9,8 @@
     <script type="text/javascript" src="JUnitTestSuite.js"> </script>
     <script type="text/javascript" src="JUnitTestCase.js"> </script>
     <script type="text/javascript">
-      function jUnitJobTest() {
-        var testJob = new JUnitJob(94661534);
-        console.log(testJob);
-      }
-
-      jUnitJobTest();
+      var testjob=new JUnitJob(94661534,function(){console.log("job fertig geladen");});
+      console.log(testjob);
     </script>
   </head>
   <body>
