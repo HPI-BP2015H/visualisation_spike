@@ -16,33 +16,27 @@ var JUnitTestSuite = function(jUnitDOMSubtree){
   }
 
   function getName() {
-    // TODO: Implement.
-    return "";
+    return jUnitDOMSubtree.getAttribute("name");
   }
 
   function getTime() {
-    // TODO. Implement.
-    return 0;
+    return jUnitDOMSubtree.getAttribute("time");
   }
 
   function getTestcaseCount() {
-    // TODO: Implement.
-    return 0;
+    return jUnitDOMSubtree.getAttribute("tests");
   }
 
   function getFailCount(){
-    // TODO: Implement.
-    return 0;
+    return jUnitDOMSubtree.getAttribute("failures");
   }
 
   function getPassCount(){
-    // TODO: Implement.
-    return 0;
+    return (jUnitDOMSubtree.getAttribute("tests") - jUnitDOMSubtree.getAttribute("failures"));
   }
 
   function getErrorCount(){
-    // TODO: Implement.
-    return 0;
+    return jUnitDOMSubtree.getAttribute("errors");
   }
 
 }
