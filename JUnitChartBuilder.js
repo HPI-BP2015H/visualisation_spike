@@ -102,7 +102,7 @@ var JUnitChartBuilder = function(slug) {
 
 
     var options = {
-      title: 'Correlation between commit date/time, number of failures and number of commits.',
+      title: 'Correlation between commit date/time, number of commits and their percentage failures.',
       hAxis: {
         title: 'Time of Day',
         minValue: 0,
@@ -112,13 +112,14 @@ var JUnitChartBuilder = function(slug) {
         title: 'Weekday',
         minValue: 0,
         maxValue: 6,
-        ticks: [ { v: 0, f: weekday[0]},
-        { v: 1, f: weekday[1]},
-        { v: 2, f: weekday[2]},
-        { v: 3, f: weekday[3]},
-        { v: 4, f: weekday[4]},
-        { v: 5, f: weekday[5]},
-        { v: 6, f: weekday[6]}
+        ticks: [
+          { v: 0, f: weekday[0]},
+          { v: 1, f: weekday[6]},
+          { v: 2, f: weekday[5]},
+          { v: 3, f: weekday[4]},
+          { v: 4, f: weekday[3]},
+          { v: 5, f: weekday[2]},
+          { v: 6, f: weekday[1]},
        ]
 
       },
@@ -137,10 +138,6 @@ var JUnitChartBuilder = function(slug) {
     var chart = new google.visualization.BubbleChart(document.getElementById('bubble_chart'));
     chart.draw(data, options);
 
-
-
-
-
   }
 
 
@@ -156,15 +153,15 @@ var JUnitChartBuilder = function(slug) {
     }
 
     var array = [
-      ['ID', 'Time', 'Weekday', 'numberOfFailures', 'numberofCommits']
+      ['ID', 'Time', 'Weekday', 'percentageOfFailures', 'numberofCommits']
     ];
     var weekday = null;
     var time = null;
     var isFailure = null;
     for (var i = 0; i < builds.length; i++) {
       time = dateToHalfHours(builds[i].commitTime);
-      weekday = builds[i].commitTime.getDay();
-      isFailure = buildStateToBool(builds[i].state);
+      weekday = correctWeekday(builds[i].commitTime.getDay());
+      isFailure = buildStateToBool(builds[i].status);
       var n = dateAlreadyInArray(array, time, weekday);
       if (n) {
         array[n][4] += 1;
@@ -185,9 +182,7 @@ var JUnitChartBuilder = function(slug) {
       }
     }
     for (var i = 1; i < array.length; i++) {
-      var percentageOfFailures = array[i][3] / array[i][4];
-      console.log(array[i][3], ' / ', array[i][4], ' = ', percentageOfFailures);
-      array[i][3] = percentageOfFailures;
+      array[i][3] = (array[i][3] / array[i][4]) * 100;
     }
     return array;
   };
