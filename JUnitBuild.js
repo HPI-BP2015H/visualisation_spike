@@ -55,27 +55,42 @@
   }
 
   function getBuildTime() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].time;
+    }
+    return result;
   }
 
   function getTestcaseCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].testcaseCount;
+    }
+    return result;
   }
 
   function getFailCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].failCount;
+    }
+    return result;
   }
 
   function getPassCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].passCount;
+    }
+    return result;
   }
 
   function getErrorCount() {
-    // TODO: Implement.
-    return 0;
+    var result = 0;
+    for(var i = 0; i < self.jobs.length; i++) {
+      result += self.jobs[i].errorCount;
+    }
+    return result;
   }
 }
