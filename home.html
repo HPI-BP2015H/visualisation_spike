@@ -17,12 +17,17 @@
 
       var slug = "HPI-BP2015H%2FSWT-Demo"
       var chartsBuilder = new JUnitChartBuilder(slug);
+      console.log(chartsBuilder);
+
 
     </script>
   </head>
   <body>
-    <div id="stackedAreaChart" style="height: 400px;"></div>
-    <div id="bubble_chart" style="height: 500px;"></div>
-    <div id="pieChart1" style="height: 500px;"></div>
+    <div style="padding: 3%;">
+      <h1>Slug: <input type="text" name="slug" id="slugInput" value="hpi-swt2%2Fwimi-portal"> <input type="submit" value="Generate Charts" id="generateCharts">
+      <div id="stackedAreaChart" style="height: 400px;"></div>
+      <div id="bubble_chart" style="height: 500px;"></div>
+      <div id="branch_health"></div>
+    </div>
   </body>
 </html>

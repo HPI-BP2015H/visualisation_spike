@@ -5,29 +5,10 @@ var JUnitChartBuilder = function(slug) {
 
   function generateCharts() {
     console.log("generateCharts");
-    var mockXMLs = [
-      '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>',
-      '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="2" failures="1" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>'
-    ];
-    var stackedAreaData = [
-      ["Build", "Error", "Fail", "Pass"]
-    ];
-
-    var mockParser = new DOMParser();
-
-    for (var i = 0; i < mockXMLs.length; i++) {
-      var mockDOM = mockParser.parseFromString(mockXMLs[i], "text/xml");
-      var tests = parseInt(mockDOM.documentElement.getAttribute("tests"));
-      var fails = parseInt(mockDOM.documentElement.getAttribute("failures"));
-      var errors = parseInt(mockDOM.documentElement.getAttribute("errors"));
-      var passes = tests - fails;
-      stackedAreaData.push([(i + 1).toString(), errors, fails, passes]);
-    }
-
     google.load("visualization", "1.0", {
       packages: ["corechart", "bar"],
       callback: function() {
-        generateStackedAreaChart(stackedAreaData);
+        generateStackedAreaChart();
         generateBubbleChart();
         generateBranchHealthChart();
       }
@@ -35,12 +16,9 @@ var JUnitChartBuilder = function(slug) {
   }
 
 
-  function generateStackedAreaChart(dataArray) {
-    console.log("function generateStackedAreaChart(dataArray) called");
-    // Just a mock-up right now.
+  function generateStackedAreaChart() {
+    console.log("function generateStackedAreaChart() called");
 
-
-    console.log("----------------------------------------------------------------------");
     var container = document.getElementById('stackedAreaChart');
     var chart = new google.visualization.AreaChart(container);
     /*var data = google.visualization.arrayToDataTable([
@@ -51,7 +29,7 @@ var JUnitChartBuilder = function(slug) {
 			[    "4",      10,     15,     90],
 			[    "5",       2,      7,     98]
 		]);*/
-    var data = new google.visualization.arrayToDataTable(dataArray);
+    var data = new google.visualization.arrayToDataTable(getDataForStackedAreaChart());
     var options = {
       isStacked: true,
       height: 400,
@@ -86,7 +64,7 @@ var JUnitChartBuilder = function(slug) {
     /*var data = google.visualization.arrayToDataTable([
 		['ID',    'time', 'Weekday', 'numberOfCommits',     'commitID'],
 	]);*/
-    var data = google.visualization.arrayToDataTable(getAllCommitsWithDate());
+    var data = google.visualization.arrayToDataTable(getDataForBubbleChart());
 
     var weekday = new Array(7);
     weekday[0] = "Sunday";
@@ -138,16 +116,21 @@ var JUnitChartBuilder = function(slug) {
   }
 
 
-
-  function getAllCommitsWithDate() { //for all branches
-    console.log("function getAllCommitsWithDate() called");
-
+  function getAllBuilds(){
     var builds = [];
     for (var i = 0; i < self.repo.branches.length; i++) {
       for (var j = 0; j < self.repo.branches[i].builds.length; j++) {
         builds.push(self.repo.branches[i].builds[j])
       }
     }
+    return builds
+  }
+
+
+  function getDataForBubbleChart() { //for all branches
+    console.log("function getAllCommitsWithDate() called");
+
+    var builds = getAllBuilds();
 
     var array = [
       ['ID', 'time', 'weekday', 'percentage of failures', 'number of commits']
@@ -183,6 +166,27 @@ var JUnitChartBuilder = function(slug) {
     }
     return array;
   };
+
+
+  function getDataForStackedAreaChart() {
+    var dataArray = [	["Build", "Error", "Fail", "Pass"] ];
+    var builds = getAllBuilds();
+    for (var i = 0; i < builds.length; i++) {
+      var build = i; //builds[i].id//builds[i].commitTime
+      var errorCount = 0;
+      var failCount = 0;
+      var passCount = 0;
+      for (var j = 0; j < builds[i].jobs.length; j++) {
+        errorCount += builds[i].jobs[j].errorCount;
+        failCount += builds[i].jobs[j].failCount;
+        passCount += builds[i].jobs[j].passCount;
+      }
+      dataArray.push([build, errorCount, failCount, passCount])
+    }
+    return dataArray
+
+
+  }
 
   function generateBranchHealthChart() {
 
