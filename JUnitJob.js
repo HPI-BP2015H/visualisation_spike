@@ -119,19 +119,9 @@ var JUnitJob = function(id, callback) {
 
   function createTestsuites() {
     var jUnitTestsuites = jUnitDOM.getElementsByTagName("testsuite");
-    var doneCount2=0;
     for(var i = 0; i < jUnitTestsuites.length; i++) {
-      self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i], function(){
-        doneCount2++
-        if(doneCount2 == jUnitTestsuites.length){
-          self.time          = getJobTime();
-          self.testcaseCount = getTestcaseCount();
-          self.failCount     = getFailCount();
-          self.passCount     = getPassCount();
-          self.errorCount    = getErrorCount();
-          callback();
-        }
-      }));
+      self.testsuites.push(new JUnitTestSuite(jUnitTestsuites[i]));
     }
+    callback();
   }
 }

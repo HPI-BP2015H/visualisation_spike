@@ -1,4 +1,4 @@
-var JUnitTestSuite = function(jUnitDOMSubtree, callback){
+var JUnitTestSuite = function(jUnitDOMSubtree){
 
   var self = this;
 
@@ -10,8 +10,6 @@ var JUnitTestSuite = function(jUnitDOMSubtree, callback){
   this.failCount = getFailCount();
   this.passCount = getPassCount();
   this.errorCount = getErrorCount();
-
-	callback();
 
   function createTestcases() {
     var jUnitTestcases = jUnitDOMSubtree.getElementsByTagName("testcase");
