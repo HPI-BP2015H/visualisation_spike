@@ -24,7 +24,7 @@ var JUnitJob = function(id, callback) {
 
   // private
   function loadStatus() {
-    var apiPath = "https://api.travis-ci.org/v3/job/" + self.id.toString();
+    var apiPath = "job/" + self.id.toString();
     getResultFromTravisAPI(apiPath, function(data) {
       if(data != undefined) {
         self.status = data.state;

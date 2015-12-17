@@ -29,7 +29,7 @@
   }
 
   function loadCommitterName() {
-    var apiPath = "https://api.github.com/repos/" + githubCompatibleSlug(self.slug) + "/commits/" + travisBuildObject.commit.sha;
+    var apiPath = "repos/" + githubCompatibleSlug(self.slug) + "/commits/" + travisBuildObject.commit.sha;
     getResultFromGithubAPI(apiPath, function(data) {
       if(data != undefined) {
         self.committerName = data.commit.committer.name;

@@ -19,14 +19,14 @@ function getResultFromTravisAPI(anAPIPath, completionBlock) {
     "Travis-API-Version": "3",
     //"User-Agent": "Travis-Visualisation"
   };
-  getResultViaAjax(anAPIPath, completionBlock, "json", header);
+  getResultViaAjax("https://api.travis-ci.org/v3/" + anAPIPath, completionBlock, "json", header);
 }
 
 function getResultFromGithubAPI(anAPIPath, completionBlock) {
   var header = {
     //"User-Agent": "Travis-Visualisation"
   };
-  getResultViaAjax(anAPIPath, completionBlock, "json", header);
+  getResultViaAjax("https://api.github.com/" + anAPIPath, completionBlock, "json", header);
 };
 
 function githubCompatibleSlug(slug) {

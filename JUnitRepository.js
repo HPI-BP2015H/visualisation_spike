@@ -10,7 +10,7 @@ var JUnitRepository = function(slug, callback) {
 
   // private
   function loadBranches() {
-    var apiPath = "https://api.travis-ci.org/v3/repo/" + self.slug + "/branches";
+    var apiPath = "repo/" + self.slug + "/branches";
     getResultFromTravisAPI(apiPath, function(data) {
       if(data == undefined) {
         callback();
