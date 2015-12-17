@@ -98,29 +98,27 @@ var JUnitJob = function(id, callback) {
 
     for(var i = 0; i < xml_testsuites_count; i++) {
       // for each testsuite
-      console.log("testsuite loop entered");
       var testsuite_tests   = getRandomInt(1, 25);
       var testsuite_fails   = 0;
       var testsuite_errors  = 0;
       var testsuite_skipped = 0;
       var testsuite_time    = 0;
-      var testsuite_name    = 'testsuite_' + i.toString(Math.ceil(Math.log10(xml_testsuites_count)));
+      var testsuite_name    = 'testsuite_' + i.toString();
 
       var testsuite_testcases = [];
 
       for(var j = 0; j < testsuite_tests; j++) {
         // for each testcase
-        console.log("testcase loop entered");
         var testcase_status    = getRandomInt(1, 5);
         var testcase_time      = getRandomInt(1, 100);
-        var testcase_name      = 'test_'  + i.toString(Math.ceil(Math.log10(xml_testsuites_count))) + "_" + j.toString(Math.ceil(Math.log10(testsuites_tests)));
-        var testcase_classname = 'class_' + i.toString(Math.ceil(Math.log10(xml_testsuites_count))) + "_" + j.toString(Math.ceil(Math.log10(testsuites_tests)));
+        var testcase_name      = 'test_'  + i.toString() + "_" + j.toString();
+        var testcase_classname = 'class_' + i.toString() + "_" + j.toString();
 
         var testcase_head = '<testcase name="' + testcase_name + '" classname="' + testcase_classname + '" time="' + testcase_time.toString() + '">';
         var testcase_body = '';
         var testcase_foot = '</testcase>';
 
-        switch(status) {
+        switch(testcase_status) {
           case 1:
             // passed
             testcase_body = '';
@@ -163,7 +161,6 @@ var JUnitJob = function(id, callback) {
 
     var mock = mock_head + xml_head + xml_testsuites.join('') + xml_foot;
     // var mock = '<?xml version="1.0" encoding="UTF-8"?><testsuite name="#(\'BaselineOfSWTDemo\') Test Suite" tests="1" failures="0" errors="2" time="0.0"><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testAnotherValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testAnotherValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><testcase classname="SWTDemo.Tests.SWTDemoTest" name="testValue" time="0.0"><error type="TestFailure" message="Assertion failed">SWTDemoTest(TestCase)>>signalFailure:\nSWTDemoTest(TestCase)>>assert:\nSWTDemoTest>>testValue\nSWTDemoTest(TestCase)>>performTest\n</error></testcase><system-out><![CDATA[]]></system-out><system-err><![CDATA[]]></system-err></testsuite>';
-    console.log(mock);
     return mock;
   }
 
