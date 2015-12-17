@@ -13,21 +13,42 @@
     <script type="text/javascript" src="JUnitJob.js"> </script>
     <script type="text/javascript" src="JUnitTestSuite.js"> </script>
     <script type="text/javascript" src="JUnitTestCase.js"> </script>
-    <script type="text/javascript">
-
-      var slug = "HPI-BP2015H%2FSWT-Demo"
-      var chartsBuilder = new JUnitChartBuilder(slug);
-      console.log(chartsBuilder);
-
-
-    </script>
+    <style>
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #000;
+          opacity: 0.75;
+          z-index: 10000;
+          vertical-align: middle;
+          text-align: center;
+          color: #fff;
+          font-size: 30px;
+          font-weight: bold;
+          cursor: wait;
+        }
+        .overlay div {
+          padding-top: 20%;
+        }
+    </style>
   </head>
   <body>
     <div style="padding: 3%;">
-      <h1>Slug: <input type="text" name="slug" id="slugInput" value="hpi-swt2%2Fwimi-portal"> <input type="submit" value="Generate Charts" id="generateCharts">
+      <div id="overlay" class="overlay"><div>Currently loading data for <span id="slug"></span> ...<br />This may take some time.</div></div>
+      <h1>Slug: <input type="text" name="slug" id="slugInput" value="hpi-swt2%2Fwimi-portal"> <input type="submit" value="Generate Charts" id="generateCharts"></h1>
       <div id="stackedAreaChart" style="height: 400px;"></div>
       <div id="bubble_chart" style="height: 500px;"></div>
       <div id="branch_health"></div>
     </div>
   </body>
+  <script type="text/javascript">
+    $("#generateCharts").click(function() {
+      console.log("Start");
+      new JUnitChartBuilder($("#slugInput").val());
+    });
+    new JUnitChartBuilder("HPI-BP2015H%2FSWT-Demo"); // Display charts on page load
+  </script>
 </html>

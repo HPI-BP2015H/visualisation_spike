@@ -1,6 +1,10 @@
 var JUnitChartBuilder = function(slug) {
   var self = this;
 
+  // display loading
+  $("#slug").text(slug);
+  $("#overlay").show();
+
   // variables
   this.repo = new JUnitRepository(slug, generateCharts);
 
@@ -13,6 +17,7 @@ var JUnitChartBuilder = function(slug) {
         generateStackedAreaChart();
         generateBubbleChart();
         generateBranchHealthChart();
+        $("#overlay").hide();
       }
     });
   }
