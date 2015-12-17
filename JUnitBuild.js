@@ -57,7 +57,7 @@
     var apiPath = "https://api.github.com/repos/" + githubCompatibleSlug(self.slug) + "/commits/" + travisBuildObject.commit.sha;
     getResultFromGithubAPI(apiPath, function(data) {
       if(data != undefined) {
-        self.committerName = res.commit.committer.name;
+        self.committerName = data.commit.committer.name;
       }
       doneCount++;
       if(doneCount >= 2) {
