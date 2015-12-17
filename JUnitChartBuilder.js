@@ -1,10 +1,12 @@
 var JUnitChartBuilder = function(slug) {
   var self = this;
 
+  // variables
   this.repo = new JUnitRepository(slug, generateCharts);
 
+  // private
   function generateCharts() {
-    console.log("generateCharts");
+    console.log(self.repo);
     google.load("visualization", "1.0", {
       packages: ["corechart"],
       callback: function() {
@@ -15,20 +17,9 @@ var JUnitChartBuilder = function(slug) {
     });
   }
 
-
   function generateStackedAreaChart() {
-    console.log("function generateStackedAreaChart() called");
-
     var container = document.getElementById('stackedAreaChart');
     var chart = new google.visualization.AreaChart(container);
-    /*var data = google.visualization.arrayToDataTable([
-			["Build", "Error", "Fail", "Pass"],
-			[    "1",       5,      7,     83],
-			[    "2",       5,      8,     82],
-			[    "3",       8,      0,     90],
-			[    "4",      10,     15,     90],
-			[    "5",       2,      7,     98]
-		]);*/
     var data = new google.visualization.arrayToDataTable(getDataForStackedAreaChart());
     var options = {
       isStacked: true,
@@ -55,11 +46,9 @@ var JUnitChartBuilder = function(slug) {
       }]
     };
     chart.draw(data, options);
-
   }
 
   function generateBubbleChart() {
-
 
     /*var data = google.visualization.arrayToDataTable([
 		['ID',    'time', 'Weekday', 'numberOfCommits',     'commitID'],
@@ -74,7 +63,6 @@ var JUnitChartBuilder = function(slug) {
     weekday[4] = "Thursday";
     weekday[5] = "Friday";
     weekday[6] = "Saturday";
-
 
     var options = {
       title: 'Correlation between commit date/time, number of commits and their percentage failures.',
@@ -115,7 +103,6 @@ var JUnitChartBuilder = function(slug) {
 
   }
 
-
   function getAllBuilds(){
     var builds = [];
     for (var i = 0; i < self.repo.branches.length; i++) {
@@ -126,10 +113,7 @@ var JUnitChartBuilder = function(slug) {
     return builds
   }
 
-
   function getDataForBubbleChart() { //for all branches
-    console.log("function getAllCommitsWithDate() called");
-
     var builds = getAllBuilds();
 
     var array = [
@@ -167,7 +151,6 @@ var JUnitChartBuilder = function(slug) {
     return array;
   };
 
-
   function getDataForStackedAreaChart() {
     var dataArray = [	["Build", "Error", "Fail", "Pass"] ];
     var builds = getAllBuilds();
@@ -184,7 +167,6 @@ var JUnitChartBuilder = function(slug) {
       dataArray.push([build, errorCount, failCount, passCount])
     }
     return dataArray
-
 
   }
 
@@ -212,7 +194,6 @@ var JUnitChartBuilder = function(slug) {
       return b[1] - a[1];
     });
 
-    console.log(data);
     var options = {
       height: self.repo.branches.length * 35 + 35,
       bars: 'horizontal',

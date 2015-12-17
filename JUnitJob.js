@@ -8,6 +8,7 @@ var JUnitJob = function(id, callback) {
   this.log            = "";
   this.os             = "";
   this.env            = "";
+  this.travisTime     = 0;
   this.time           = 0;
   this.testcaseCount  = 0;
   this.failCount      = 0;
@@ -27,6 +28,7 @@ var JUnitJob = function(id, callback) {
     getResultFromTravisAPI(apiPath, function(data) {
       if(data != undefined) {
         self.status = data.state;
+        self.travisTime = Date.parse(data.finished_at) - Date.parse(data.started_at);
       }
       doneCount++;
       if(doneCount >= 2) {

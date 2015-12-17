@@ -5,46 +5,21 @@
   this.id = travisBuildObject.id;
   this.slug = slug;
   this.jobs = [];
+  this.status = getStatus();
+  this.commitTime = getCommitTime();
+  this.time = 0;
+  this.testcaseCount = 0;
+  this.failCount = 0;
+  this.passCount = 0;
+  this.errorCount = 0;
 
   var doneCount = 0;
 
   // init
-  this.jobs = getJobs();
+  loadCommitterName();
+  loadJobs();
 
-  //just a fix. later in the values below will be aquired through this.jobs
-  var jDOM = 0;
-
-  function getJobs() {
-    var j = [];
-    var doneCount=0;
-    for (var i = 0; i < travisBuildObject.jobs.length; i++) {
-      j.push(new JUnitJob(travisBuildObject.jobs[i].id, function() {
-
-        doneCount++;
-        if (doneCount == travisBuildObject.jobs.length) {
-
-          self.status = getStatus();
-          self.commitTime = getCommitTime();
-          loadCommitterName();
-
-          // Aggregate values from JUnitJobs.
-          self.time = getBuildTime();
-          self.testcaseCount = getTestcaseCount();
-          self.failCount = getFailCount();
-          self.passCount = getPassCount();
-          self.errorCount = getErrorCount();
-
-          doneCount++;
-          if(doneCount >= 2) {
-              callback();
-          }
-
-        }
-      }));
-    }
-    return j;
-  }
-
+  // private
   function getStatus() {
     return travisBuildObject.state;
   }
@@ -60,49 +35,36 @@
         self.committerName = data.commit.committer.name;
       }
       doneCount++;
-      if(doneCount >= 2) {
-          callback();
+      if (doneCount == 2) {
+        callback();
       }
     });
   }
 
-  function getBuildTime() {
-    var result = 0;
-    for(var i = 0; i < self.jobs.length; i++) {
-      result += self.jobs[i].time;
+  function loadJobs() {
+    var loadedJobs = 0;
+    for (var i = 0; i < travisBuildObject.jobs.length; i++) {
+      self.jobs.push(new JUnitJob(travisBuildObject.jobs[i].id, function() {
+        loadedJobs++;
+        if (loadedJobs == travisBuildObject.jobs.length) {
+          aggregateJobData();
+          doneCount++;
+          if (doneCount == 2) {
+            callback();
+          }
+        }
+      }));
     }
-    return result;
   }
 
-  function getTestcaseCount() {
-    var result = 0;
+  function aggregateJobData() {
     for(var i = 0; i < self.jobs.length; i++) {
-      result += self.jobs[i].testcaseCount;
+      self.time += self.jobs[i].time;
+      self.testcaseCount += self.jobs[i].testcaseCount;
+      self.failCount += self.jobs[i].failCount;
+      self.passCount += self.jobs[i].passCount;
+      self.errorCount+= self.jobs[i].errorCount;
     }
-    return result;
   }
 
-  function getFailCount() {
-    var result = 0;
-    for(var i = 0; i < self.jobs.length; i++) {
-      result += self.jobs[i].failCount;
-    }
-    return result;
-  }
-
-  function getPassCount() {
-    var result = 0;
-    for(var i = 0; i < self.jobs.length; i++) {
-      result += self.jobs[i].passCount;
-    }
-    return result;
-  }
-
-  function getErrorCount() {
-    var result = 0;
-    for(var i = 0; i < self.jobs.length; i++) {
-      result += self.jobs[i].errorCount;
-    }
-    return result;
-  }
 }
