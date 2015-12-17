@@ -4,23 +4,28 @@
   // variables
   this.id = travisBuildObject.id;
   this.slug = slug;
+  this.jobs = [];
+
+  var doneCount = 0;
+
+  // init
   this.jobs = getJobs();
 
   //just a fix. later in the values below will be aquired through this.jobs
   var jDOM = 0;
 
-
   function getJobs() {
     var j = [];
     var doneCount=0;
     for (var i = 0; i < travisBuildObject.jobs.length; i++) {
-      j.push(new JUnitJob(travisBuildObject.jobs[i].id, function(){
+      j.push(new JUnitJob(travisBuildObject.jobs[i].id, function() {
+
         doneCount++;
         if (doneCount == travisBuildObject.jobs.length) {
-          // Retrieve values via REST API.
-          self.commitTime = getCommitTime();
-          self.committerName = getCommitterName();
+
           self.status = getStatus();
+          self.commitTime = getCommitTime();
+          loadCommitterName();
 
           // Aggregate values from JUnitJobs.
           self.time = getBuildTime();
@@ -29,29 +34,36 @@
           self.passCount = getPassCount();
           self.errorCount = getErrorCount();
 
-          callback();
+          doneCount++;
+          if(doneCount >= 2) {
+              callback();
+          }
+
         }
       }));
     }
     return j;
   }
 
+  function getStatus() {
+    return travisBuildObject.state;
+  }
+
   function getCommitTime() {
     return new Date(travisBuildObject.commit.committed_at);
   }
 
-  function getCommitterName() {
+  function loadCommitterName() {
     var apiPath = "https://api.github.com/repos/" + githubCompatibleSlug(self.slug) + "/commits/" + travisBuildObject.commit.sha;
-    var res = getResultFromGithubAPI(apiPath);
-    if (res) {
-      return res.commit.committer.name;
-    } else {
-      return "Max Mustermann";
-    }
-  }
-
-  function getStatus() {
-    return travisBuildObject.state;
+    getResultFromGithubAPI(apiPath, function(data) {
+      if(data != undefined) {
+        self.committerName = data.commit.committer.name;
+      }
+      doneCount++;
+      if(doneCount >= 2) {
+          callback();
+      }
+    });
   }
 
   function getBuildTime() {

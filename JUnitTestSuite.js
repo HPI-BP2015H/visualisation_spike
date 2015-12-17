@@ -31,7 +31,7 @@ var JUnitTestSuite = function(jUnitDOMSubtree){
   }
 
   function getFailCount(){
-    return jUnitDOMSubtree.getAttribute("failures");
+    return parseInt(jUnitDOMSubtree.getAttribute("failures"));
   }
 
   function getPassCount(){
@@ -39,7 +39,7 @@ var JUnitTestSuite = function(jUnitDOMSubtree){
   }
 
   function getErrorCount(){
-    return jUnitDOMSubtree.getAttribute("errors");
+    return parseInt(jUnitDOMSubtree.getAttribute("errors"));
   }
 
 }
