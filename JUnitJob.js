@@ -90,7 +90,7 @@ var JUnitJob = function(id, callback) {
 
   function getXML() {
     // TODO: Find XML in log and return it.
-    var xml_testsuites = getRandomInt(1, 5);
+    var xml_testsuites_count = getRandomInt(1, 5);
     var xml_tests  = 0;
     var xml_fails  = 0;
     var xml_errors = 0;
@@ -98,14 +98,14 @@ var JUnitJob = function(id, callback) {
 
     var xml_testsuites = [];
 
-    for(var i = 0; i < xml_testsuites; i++) {
+    for(var i = 0; i < xml_testsuites_count; i++) {
       // for each testsuite
       var testsuite_tests   = getRandomInt(1, 25);
       var testsuite_fails   = 0;
       var testsuite_errors  = 0;
       var testsuite_skipped = 0;
       var testsuite_time    = 0;
-      var testsuite_name    = 'testsuite_' + i.toString(Math.ceil(Math.log10(xml_testsuites)));
+      var testsuite_name    = 'testsuite_' + i.toString();
 
       var testsuite_testcases = [];
 
@@ -113,14 +113,14 @@ var JUnitJob = function(id, callback) {
         // for each testcase
         var testcase_status    = getRandomInt(1, 5);
         var testcase_time      = getRandomInt(1, 100);
-        var testcase_name      = 'test_'  + i.toString(Math.ceil(Math.log10(xml_testsuites))) + "_" + j.toString(Math.ceil(Math.log10(testsuites_tests)));
-        var testcase_classname = 'class_' + i.toString(Math.ceil(Math.log10(xml_testsuites))) + "_" + j.toString(Math.ceil(Math.log10(testsuites_tests)));
+        var testcase_name      = 'test_'  + i.toString() + "_" + j.toString();
+        var testcase_classname = 'class_' + i.toString() + "_" + j.toString();
 
         var testcase_head = '<testcase name="' + testcase_name + '" classname="' + testcase_classname + '" time="' + testcase_time.toString() + '">';
         var testcase_body = '';
         var testcase_foot = '</testcase>';
 
-        switch(status) {
+        switch(testcase_status) {
           case 1:
             // passed
             testcase_body = '';
