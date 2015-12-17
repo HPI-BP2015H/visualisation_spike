@@ -155,3 +155,7 @@ function componentToHex(c) {
 function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
