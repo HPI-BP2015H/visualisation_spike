@@ -1,7 +1,5 @@
 function getResultViaAjax(anAPIPath, completionBlock, dataType, header) {
   jQuery.ajax({
-    method: "GET", // default
-    async: true, // default
     dataType: dataType,
     url: anAPIPath,
     headers: header,
@@ -24,37 +22,16 @@ function getResultFromTravisAPI(anAPIPath, completionBlock) {
   getResultViaAjax(anAPIPath, completionBlock, "json", header);
 }
 
-function getResultFromGithubAPI(anAPIPath) {
-  $.ajaxSetup({
-    async: false
-  });
-  var helper = null;
-  jQuery.ajax({
-    method: "GET",
-    /*headers: {
-      "Travis-API-Version":"3"
-    },*/
-    dataType: "json",
-    url: anAPIPath,
-    success: function(data, status, jqXHR) {
-      console.log("[DONE] getting result from " + anAPIPath);
-      helper = data;
-    },
-    error: function(jqXHR, status) {
-      console.log("[FAILED] getting result");
-      console.log(jqXHR);
-      console.log(status);
-    }
-  });
-  return helper;
+function getResultFromGithubAPI(anAPIPath, completionBlock) {
+  var header = {
+    //"User-Agent": "Travis-Visualisation"
+  };
+  getResultViaAjax(anAPIPath, completionBlock, "json", header);
 };
-
 
 function githubCompatibleSlug(slug) {
   return slug.replace(/\%2F/, "/");
 }
-
-
 
 function dateAlreadyInArray(array, time, weekday) {
   for (var i = 0; i < array.length; i++) {
@@ -123,7 +100,6 @@ function buildStateToBool(aState) {
     return false;
   }
 }
-
 
 function correctWeekday(aWeekday) {
   var reverseDays = [0, 6, 5, 4, 3, 2, 1];
