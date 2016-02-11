@@ -30,19 +30,42 @@
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script>
 
-  /*var data = {
+  function cleanData(data) {
+    var result = [];
+    for(var date in data.recent_build_history) {
+      var current = {
+        date: date,
+        passed: 0,
+        failed: 0
+      };
+      if(data.recent_build_history[date].passed) {
+        current.passed = data.recent_build_history[date].passed;
+      }
+      if(data.recent_build_history[date].failed) {
+        current.failed = data.recent_build_history[date].failed;
+      }
+      result.push(current);
+    }
+    return result;
+  };
+
+  var rawdata = {
     "@type": "overview",
     "@href": "/v3/repo/#{repo.id}/overview/build_history",
     "@representation": "standard",
     "recent_build_history": {
-      '2015-02-11' => {
+      '2015-02-11': {
         'failed': 1
       },
-      '2007-2-10' => {
+      '2007-02-10': {
         'passed': 1
       }
-    };*/
-  var data = [
+    }
+    };
+
+  data = cleanData(rawdata);
+
+  /*var data = [
     {
       date: '2015-02-11',
       passed: 3,
@@ -58,7 +81,7 @@
       passed: 11,
       failed: 1,
     }
-  ];
+  ];*/
 
 
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
