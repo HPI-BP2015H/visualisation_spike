@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<meta charset="UTF-8">
+<style>
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+</style>
+
+<svg class="chart"></svg>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+  var
+    data = [4, 8, 15, 16, 23, 42],
+    height = 420,
+    barWidth = 20;
+
+  var scaler = d3.scale.linear()
+    .domain([0, d3.max(data)])
+    .range([0, height]);
+
+  var chart = d3.select(".chart")
+    .attr("height", height)
+    .attr("width", barWidth * data.length);
+
+  var bar = chart.selectAll("g")
+    .data(data)
+    .enter().append("g")
+    .attr("transform", function(d, i) { return "translate(" + i * barWidth + ", " + (height - scaler(d)) + ")"; });
+
+  bar.append("rect")
+    .attr("height", function(d) { return scaler(d); })
+    .attr("width", barWidth - 1);
+
+  bar.append("text")
+    .attr("y", function(d) { return scaler(d) - 3; })
+    .attr("dx", (barWidth-1)/2)
+    .text(function(d) { return d; });
+</script>
