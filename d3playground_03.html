@@ -11,13 +11,20 @@
 }
 
 .axis {
-  font: 10px sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  font-family: "Source Sans Pro",Helvetica,sans-serif;
+}
+
+.axis text {
+  fill: #666;
 }
 
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #666;
   shape-rendering: crispEdges;
 }
 
@@ -30,19 +37,21 @@
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script>
 
-  function cleanData(data) {
+  var maxYTicks = 5;
+
+  function cleanData(json) {
     var result = [];
-    for(var date in data.recent_build_history) {
+    for(var date in json.recent_build_history) {
       var current = {
         date: (new Date(date)).toLocaleDateString(),
         passed: 0,
         failed: 0
       };
-      if(data.recent_build_history[date].passed) {
-        current.passed = data.recent_build_history[date].passed;
+      if(json.recent_build_history[date].passed) {
+        current.passed = json.recent_build_history[date].passed;
       }
-      if(data.recent_build_history[date].failed) {
-        current.failed = data.recent_build_history[date].failed;
+      if(json.recent_build_history[date].failed) {
+        current.failed = json.recent_build_history[date].failed;
       }
       result.push(current);
     }
@@ -50,10 +59,18 @@
   };
 
   function yTicks(data) {
-    // TODO
+    var maxBuilds = 0;
+    for(var i = 0; i < data.length; i++) {
+      var builds = data[i].passed + data[i].failed;
+      if(builds > maxBuilds) {
+        maxBuilds = builds;
+      }
+    }
+    var result = maxBuilds <= maxYTicks ? maxBuilds : maxYTicks;
+    return result;
   }
 
-  var rawdata = {
+  var json = {
     "@type": "overview",
     "@href": "/v3/repo/#{repo.id}/overview/build_history",
     "@representation": "standard",
@@ -67,9 +84,9 @@
     }
     };
 
-  data = cleanData(rawdata);
+  //var data = cleanData(json);
 
-  /*var data = [
+  var data = [
     {
       date: '2015-02-11',
       passed: 3,
@@ -85,7 +102,7 @@
       passed: 11,
       failed: 1,
     }
-  ];*/
+  ];
 
 
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -105,7 +122,7 @@
   var yAxis = d3.svg.axis()
   .scale(y)
   .orient("left")
-  .ticks(10); // TODO: use yTicks()
+  .ticks(yTicks(data));
 
   var svg = d3.select("body").append("svg")
   .attr("width", width + margin.left + margin.right)
