@@ -30,6 +30,18 @@
 <body>
   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script>
+
+  function range(start, end, step) {
+    var result = [];
+    if(end < start) {
+      step = -step;
+    }
+    for(var i=start; i<=end; i=i+step) {
+      result.push(i);
+    }
+    return result;
+  }
+
   var json = {
     "@type": "overview",
     "@href": "/v3/repo/HPI-BP2015H%2Fsqueak-parable/overview/build_time",
@@ -77,7 +89,7 @@
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   x.domain([0, d3.max(json.build_time, function(d) { return d.duration })]);
-  y.domain(json.build_time.map(function(d) { return d.id }));
+  y.domain(range(1,20,1));
 
   svg.append("g")
   .attr("class", "x axis")
@@ -101,7 +113,7 @@
   .attr("class", "duration")
   .attr("x", 0)
   .attr("width", function(d) { return x(d.duration); })
-  .attr("y", function(d) { return y(d.id); })
+  .attr("y", function(d) { return y(d.id % 20); }) // TODO: xD
   .attr("height", y.rangeBand())
 
   </script>
