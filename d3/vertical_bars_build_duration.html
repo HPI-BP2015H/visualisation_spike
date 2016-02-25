@@ -49,18 +49,15 @@
     "build_time": [
       {
         "id": 491637,
+        "number": "2",
         "state": "passed",
         "duration": 121
       },
       {
         "id": 490787,
-        "state": "passed",
-        "duration": 88
-      },
-      {
-        "id": 490700,
+        "number": "1",
         "state": "failed",
-        "duration": 78
+        "duration": 88
       }
     ]
   }
@@ -75,7 +72,7 @@
   .range([0,width]);
 
   var y = d3.scale.ordinal()
-  .rangeRoundBands([0, height], 0.2);
+  .rangeRoundBands([0, height], 0.6);
 
   var xAxis = d3.svg.axis()
   .scale(x)
@@ -94,12 +91,17 @@
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   x.domain([0, d3.max(json.build_time, function(d) { return d.duration })]);
-  y.domain(json.build_time.map(function(d) { return d.id; }));
+  y.domain(json.build_time.map(function(d) { return d.number; }));
 
   svg.append("g")
   .attr("class", "x axis")
   .attr("transform", "translate(0," + height + ")")
-  .call(xAxis);
+  .call(xAxis)
+  .append("text")
+  .attr("x", width)
+  .attr("y", height)
+  .style("text-anchor", "end")
+  .text("duration / s");
 
   var yAxisGroup = svg.append("g")
   .attr("class", "y axis")
@@ -122,8 +124,9 @@
   .attr("class", function(d) { return d.state; })
   .attr("x", 0)
   .attr("width", function(d) { return x(d.duration); })
-  .attr("y", function(d) { return y(d.id); }) // TODO: xD
+  .attr("y", function(d) { return y(d.number); }) // TODO: xD
   .attr("height", y.rangeBand())
+  .on("click", function(d) { console.log("Do Ember transition stuff. (with ID: " + d.id + ")"); } );
 
   </script>
 </body>
