@@ -129,8 +129,6 @@
   .style("text-anchor", "end")
   .text("builds");
 
-  //yAxisLabel.attr("dx", yAxisLabel.node().getComputedTextLength());
-
   svg.selectAll(".duration")
   .data(json.build_time)
   .enter()
@@ -138,7 +136,7 @@
   .attr("class", function(d) { return d.state; })
   .attr("x", 0)
   .attr("width", function(d) { return x(d.duration); })
-  .attr("y", function(d) { return y(d.number); }) // TODO: xD
+  .attr("y", function(d) { return y(d.number); })
   .attr("height", y.rangeBand())
   .on("click", function(d) { console.log("Do Ember transition stuff. (with ID: " + d.id + ")"); } );
 
