@@ -24,23 +24,12 @@
 .axis line {
   fill: none;
   stroke: #666;
-  shape-rendering: crispEdges;
+  shape-rendering: auto;
 }
 </style>
 <body>
   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script>
-
-  function range(start, end, step) {
-    var result = [];
-    if(end < start) {
-      step = -step;
-    }
-    for(var i=start; i<=end; i=i+step) {
-      result.push(i);
-    }
-    return result;
-  }
 
   var json = {
     "@type": "overview",
@@ -49,13 +38,37 @@
     "build_time": [
       {
         "id": 491637,
-        "number": "2",
+        "number": "6000000",
         "state": "passed",
         "duration": 121
       },
       {
         "id": 490787,
-        "number": "1",
+        "number": "5000000",
+        "state": "failed",
+        "duration": 88
+      },
+      {
+        "id": 491637,
+        "number": "4000000",
+        "state": "passed",
+        "duration": 121
+      },
+      {
+        "id": 490787,
+        "number": "3000000",
+        "state": "failed",
+        "duration": 88
+      },
+      {
+        "id": 491637,
+        "number": "2000000",
+        "state": "passed",
+        "duration": 121
+      },
+      {
+        "id": 490787,
+        "number": "1000000",
         "state": "failed",
         "duration": 88
       }
@@ -77,11 +90,13 @@
   var xAxis = d3.svg.axis()
   .scale(x)
   .orient("bottom")
-  .ticks(4);
+  .outerTickSize(0)
+  .ticks(6);
 
   var yAxis = d3.svg.axis()
   .scale(y)
-  .orient("left");
+  .orient("left")
+  .outerTickSize(0);
 
   var svg = d3.select("body")
   .append("svg")
@@ -99,7 +114,8 @@
   .call(xAxis)
   .append("text")
   .attr("x", width)
-  .attr("y", height)
+  .attr("y", margin.bottom)
+  .attr("dy", "-0.25em")
   .style("text-anchor", "end")
   .text("duration / s");
 
@@ -108,14 +124,13 @@
   .call(yAxis)
 
   var yAxisLabel = yAxisGroup.append("text")
-  .attr("transform", "rotate(0)")
-  .attr("x", -margin.left)
+  .attr("x", -yAxis.tickSize()-yAxis.tickPadding())
   .attr("y", -margin.top)
   .attr("dy", "1em")
   .style("text-anchor", "end")
   .text("builds");
 
-  yAxisLabel.attr("dx", yAxisLabel.node().getComputedTextLength());
+  //yAxisLabel.attr("dx", yAxisLabel.node().getComputedTextLength());
 
   svg.selectAll(".duration")
   .data(json.build_time)
