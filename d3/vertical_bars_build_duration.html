@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-.duration {
+.passed {
   fill: #39aa56;
 }
 
@@ -56,21 +56,26 @@
         "id": 490787,
         "state": "passed",
         "duration": 88
+      },
+      {
+        "id": 490700,
+        "state": "failed",
+        "duration": 78
       }
     ]
   }
 
   var margin = {top: 20, right: 20, bottom: 40, left: 80},
-  fullWidth = 500,
-  fullHeight = 500,
-  width = fullWidth - margin.left - margin.right,
-  height = fullHeight - margin.top - margin.bottom;
+  width = 400,
+  height = 20 * json.build_time.length,
+  fullWidth = width + margin.left + margin.right,
+  fullHeight = height + margin.top + margin.bottom;
 
   var x = d3.scale.linear()
   .range([0,width]);
 
   var y = d3.scale.ordinal()
-  .rangeRoundBands([0, height], 0.1);
+  .rangeRoundBands([0, height], 0.2);
 
   var xAxis = d3.svg.axis()
   .scale(x)
@@ -89,31 +94,35 @@
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   x.domain([0, d3.max(json.build_time, function(d) { return d.duration })]);
-  y.domain(range(1,20,1));
+  y.domain(json.build_time.map(function(d) { return d.id; }));
 
   svg.append("g")
   .attr("class", "x axis")
   .attr("transform", "translate(0," + height + ")")
   .call(xAxis);
 
-  svg.append("g")
+  var yAxisGroup = svg.append("g")
   .attr("class", "y axis")
   .call(yAxis)
-  .append("text")
-  .attr("transform", "rotate(-90)")
-  .attr("y", 6)
-  .attr("dy", ".71em")
+
+  var yAxisLabel = yAxisGroup.append("text")
+  .attr("transform", "rotate(0)")
+  .attr("x", -margin.left)
+  .attr("y", -margin.top)
+  .attr("dy", "1em")
   .style("text-anchor", "end")
   .text("builds");
+
+  yAxisLabel.attr("dx", yAxisLabel.node().getComputedTextLength());
 
   svg.selectAll(".duration")
   .data(json.build_time)
   .enter()
   .append("rect")
-  .attr("class", "duration")
+  .attr("class", function(d) { return d.state; })
   .attr("x", 0)
   .attr("width", function(d) { return x(d.duration); })
-  .attr("y", function(d) { return y(d.id % 20); }) // TODO: xD
+  .attr("y", function(d) { return y(d.id); }) // TODO: xD
   .attr("height", y.rangeBand())
 
   </script>
