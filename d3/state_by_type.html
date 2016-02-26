@@ -25,6 +25,19 @@
   font-family: "Source Sans Pro",Helvetica,sans-serif;
 }
 
+.bar-label rect {
+  fill: #AAAAAA;
+  stroke: #999999;
+  stroke-width: 2;
+}
+
+.bar-label text {
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  font-family: "Source Sans Pro",Helvetica,sans-serif;
+}
+
 </style>
 <body>
   <div class="push"></div>
@@ -111,16 +124,34 @@
     .attr("class", "arc");
 
     var piePieceMouseEnter = function() {
-      console.log("piePieceMouseEnter");
+      var text = d3.select(this).attr("hovertext");
+
+      var labelGroup = svg.append("g")
+        .attr("class", "bar-label");
+
+      var labelRect = labelGroup.append("rect")
+      .attr("x", 0)
+      .attr("y", 0);
+
+      var labelText = labelGroup.append("text")
+      .attr("x", 10)
+      .attr("y", 5)
+      .attr("dy", "1em")
+      .text(text);
+
+      labelRect
+      .attr("height", labelText.node().getBBox().height + 10)
+      .attr("width", labelText.node().getBBox().width + 20);
     };
 
     var piePieceMouseLeave = function() {
-      console.log("piePieceMouseLeave");
+      d3.selectAll(".bar-label").remove();
     };
 
     g.append("path")
     .attr("d", arc)
     .attr("class", function(d) { return d.data.state + " pie-piece"; })
+    .attr("hovertext", function(d) { return d.data.state; })
     .on("mouseenter", piePieceMouseEnter)
     .on("mouseleave", piePieceMouseLeave);
 
