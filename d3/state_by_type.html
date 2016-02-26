@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
+.pie-piece {
+  stroke: #FFFFFF;
+  stroke-width: 2;
+}
 
 .passed {
   fill: #39aa56;
@@ -11,29 +15,14 @@
 }
 
 .errored {
-  fill: #0000FF;
+  fill: #db4545;
 }
 
-.axis {
+.arc {
   font-size: 14px;
   font-weight: 400;
   font-style: normal;
   font-family: "Source Sans Pro",Helvetica,sans-serif;
-}
-
-.axis text {
-  fill: #666;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #666;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
 }
 
 </style>
@@ -49,18 +38,18 @@
     "@representation": "standard",
     "event_type_data": {
       "push": {
-        "passed": 1,
+        "passed": 11,
         "errored": 0,
-        "failed": 0
+        "failed": 1
       },
       "pull_request": {
-        "passed": 0,
-        "errored": 0,
-        "failed": 0
+        "passed": 1,
+        "errored": 10,
+        "failed": 10
       },
       "cron": {
         "passed": 1,
-        "errored": 0,
+        "errored": 2,
         "failed": 0
       }
     }
@@ -80,15 +69,18 @@
           });
         }
       }
-      if(stateArray != []) {
+      if(stateArray.length > 0) {
         eventDict[events[i]] = stateArray;
       }
     }
     return eventDict;
   };
 
-  drawOnePie("push", convertData(json).push);
-
+  var data = convertData(json);
+  var events = Object.keys(data);
+  for(var i=0; i<events.length; i++) {
+    drawOnePie(events[i], data[events[i]])
+  }
 
   function drawOnePie(divClass, data) {
     var width = 400,
@@ -100,8 +92,8 @@
     .innerRadius(0);
 
     var labelArc = d3.svg.arc()
-    .outerRadius(radius - 80)
-    .innerRadius(radius - 80);
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
 
     var pie = d3.layout.pie()
     .sort(null)
@@ -118,15 +110,25 @@
     .enter().append("g")
     .attr("class", "arc");
 
+    var piePieceMouseEnter = function() {
+      console.log("piePieceMouseEnter");
+    };
+
+    var piePieceMouseLeave = function() {
+      console.log("piePieceMouseLeave");
+    };
+
     g.append("path")
     .attr("d", arc)
-    .attr("class", function(d) { return d.data.state; });
+    .attr("class", function(d) { return d.data.state + " pie-piece"; })
+    .on("mouseenter", piePieceMouseEnter)
+    .on("mouseleave", piePieceMouseLeave);
 
-    var text = g.append("text")
+    /*var text = g.append("text")
     .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
     .text(function(d) { return d.data.state; });
 
-    text.attr("dx", -(text.node().getComputedTextLength() / 2));
+    text.attr("dx", -(text.node().getComputedTextLength() / 2));*/
   }
   </script>
 </body>
