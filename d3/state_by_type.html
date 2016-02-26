@@ -125,7 +125,9 @@
 
     var piePieceMouseEnter = function() {
       var text = d3.select(this).attr("hovertext");
-      
+      var x = d3.mouse(this)[0];
+      var y = d3.mouse(this)[1];
+
       var labelGroup = svg.append("g")
         .attr("class", "bar-label");
 
@@ -142,11 +144,20 @@
       labelRect
       .attr("height", labelText.node().getBBox().height + 10)
       .attr("width", labelText.node().getBBox().width + 20);
+
+      labelGroup.attr("transform", "translate(" + (x+10) + "," + (y+10) + ")");
     };
 
     var piePieceMouseLeave = function() {
       d3.selectAll(".bar-label").remove();
     };
+
+    var piePieceMouseMove = function() {
+      var labelGroup = d3.select(".bar-label");
+      var x = d3.mouse(this)[0];
+      var y = d3.mouse(this)[1];
+      labelGroup.attr("transform", "translate(" + (x+10) + "," + (y+10) + ")");
+    }
 
     var piePieces = g.append("path")
     .attr("d", arc)
@@ -155,7 +166,8 @@
 
     piePieces
     .on("mouseenter", piePieceMouseEnter)
-    .on("mouseleave", piePieceMouseLeave);
+    .on("mouseleave", piePieceMouseLeave)
+    .on("mousemove" , piePieceMouseMove );
 
     /*var text = g.append("text")
     .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
