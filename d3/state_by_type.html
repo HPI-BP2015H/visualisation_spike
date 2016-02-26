@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.passed {
+  fill: #39aa56;
+}
+
+.failed {
+  fill: #db4545;
+}
+
+.errored {
+  fill: #0000FF;
+}
+
+.axis {
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  font-family: "Source Sans Pro",Helvetica,sans-serif;
+}
+
+.axis text {
+  fill: #666;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #666;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+</style>
+<body>
+  <div class="push"></div>
+  <div class="pull_request"></div>
+  <div class="cron"></div>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script>
+  var json = {
+    "@type": "overview",
+    "@href": "/v3/repo/HPI-BP2015H%2Fsqueak-parable/overview/event_type_data",
+    "@representation": "standard",
+    "event_type_data": {
+      "push": {
+        "passed": 1,
+        "errored": 0,
+        "failed": 0
+      },
+      "pull_request": {
+        "passed": 0,
+        "errored": 0,
+        "failed": 0
+      },
+      "cron": {
+        "passed": 1,
+        "errored": 0,
+        "failed": 0
+      }
+    }
+  };
+
+  function convertData(json) {
+    var events = Object.keys(json.event_type_data);
+    var eventDict = {};
+    for(var i=0; i<events.length; i++) {
+      var states = Object.keys(json.event_type_data[events[i]]);
+      var stateArray = [];
+      for(var j=0; j<states.length; j++) {
+        if(json.event_type_data[events[i]][states[j]] > 0) {
+          stateArray.push({
+            state: states[j],
+            count: json.event_type_data[events[i]][states[j]]
+          });
+        }
+      }
+      if(stateArray != []) {
+        eventDict[events[i]] = stateArray;
+      }
+    }
+    return eventDict;
+  };
+
+  var data = convertData(json).push;
+
+  function drawOnePie(data) {
+    var width = 400,
+    height = 800,
+    radius = Math.min(width, height) / 2;
+
+    var color = d3.scale.ordinal()
+    .range(["#00FF00", "#FF0000", "#0000FF"]);
+
+    var arc = d3.svg.arc()
+    .outerRadius(radius-10)
+    .innerRadius(0);
+
+    var labelArc = d3.svg.arc()
+    .outerRadius(radius - 80)
+    .innerRadius(radius - 80);
+
+    var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.count; });
+
+    var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
+    var g = svg.selectAll(".arc")
+    .data(pie(data))
+    .enter().append("g")
+    .attr("class", "arc");
+
+    g.append("path")
+    .attr("d", arc)
+    .attr("class", function(d) { return d.data.state; });
+
+    var text = g.append("text")
+    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+    .text(function(d) { return d.data.state; });
+
+    text.attr("dx", -(text.node().getComputedTextLength() / 2));
+  }
+  </script>
+</body>
