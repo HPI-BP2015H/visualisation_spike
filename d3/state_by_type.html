@@ -125,7 +125,7 @@
 
     var piePieceMouseEnter = function() {
       var text = d3.select(this).attr("hovertext");
-
+      
       var labelGroup = svg.append("g")
         .attr("class", "bar-label");
 
@@ -148,10 +148,12 @@
       d3.selectAll(".bar-label").remove();
     };
 
-    g.append("path")
+    var piePieces = g.append("path")
     .attr("d", arc)
     .attr("class", function(d) { return d.data.state + " pie-piece"; })
-    .attr("hovertext", function(d) { return d.data.state; })
+    .attr("hovertext", function(d) { return d.data.state; });
+
+    piePieces
     .on("mouseenter", piePieceMouseEnter)
     .on("mouseleave", piePieceMouseLeave);
 
