@@ -145,7 +145,9 @@
       .attr("height", labelText.node().getBBox().height + 10)
       .attr("width", labelText.node().getBBox().width + 20);
 
-      labelGroup.attr("transform", "translate(" + (x+10) + "," + (y+10) + ")");
+      var offsetX = x - labelGroup.node().getBBox().width - 5;
+      var offsetY = y - labelGroup.node().getBBox().height - 5;
+      labelGroup.attr("transform", "translate(" + offsetX + "," + offsetY + ")");
     };
 
     var piePieceMouseLeave = function() {
@@ -156,7 +158,10 @@
       var labelGroup = d3.select(".bar-label");
       var x = d3.mouse(this)[0];
       var y = d3.mouse(this)[1];
-      labelGroup.attr("transform", "translate(" + (x+10) + "," + (y+10) + ")");
+
+      var offsetX = x - labelGroup.node().getBBox().width - 5;
+      var offsetY = y - labelGroup.node().getBBox().height - 5;
+      labelGroup.attr("transform", "translate(" + offsetX + "," + offsetY + ")");
     }
 
     var piePieces = g.append("path")
