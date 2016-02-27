@@ -89,6 +89,23 @@
     return eventDict;
   };
 
+  function beautifyEventType(uglyName) {
+    switch(uglyName) {
+      case "push":
+        return "Push";
+        break;
+      case "pull_request":
+        return "Pull Request";
+        break;
+      case "cron":
+        return "Cron";
+        break;
+      default:
+        return uglyName;
+        break;
+    }
+  };
+
   var data = convertData(json);
   var events = Object.keys(data);
   for(var i=0; i<events.length; i++) {
@@ -117,6 +134,13 @@
     .attr("height", height)
     .append("g")
     .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
+    var header = svg.append("text")
+    .text(beautifyEventType(divClass));
+
+    header
+    .attr("x", -width/2 + 5)
+    .attr("y", -height/2 + header.node().getBBox().height + 5);
 
     var g = svg.selectAll(".arc")
     .data(pie(data))
