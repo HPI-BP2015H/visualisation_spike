@@ -90,19 +90,16 @@
   };
 
   function beautifyEventType(uglyName) {
+    // TODO: Refactor to more generic form algorithm?
     switch(uglyName) {
       case "push":
         return "Push";
-        break;
       case "pull_request":
         return "Pull Request";
-        break;
       case "cron":
         return "Cron";
-        break;
       default:
         return uglyName;
-        break;
     }
   };
 
