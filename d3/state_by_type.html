@@ -90,116 +90,113 @@
   };
 
   function beautifyEventType(uglyName) {
-    // TODO: Refactor to more generic form algorithm?
-    switch(uglyName) {
-      case "push":
-        return "Push";
-      case "pull_request":
-        return "Pull Request";
-      case "cron":
-        return "Cron";
-      default:
-        return uglyName;
+    return (
+      uglyName
+      .split(/[_\W]/)
+      .map(function(element, index, array) {
+        return (
+          element.substr(0,1).toUpperCase() +
+          element.substr(1,element.length-1));
+      }).join(" "));
+    };
+
+    var data = convertData(json);
+    var events = Object.keys(data);
+    for(var i=0; i<events.length; i++) {
+      drawOnePie(events[i], data[events[i]])
     }
-  };
 
-  var data = convertData(json);
-  var events = Object.keys(data);
-  for(var i=0; i<events.length; i++) {
-    drawOnePie(events[i], data[events[i]])
-  }
+    function drawOnePie(divClass, data) {
+      var width = 400,
+      height = 300,
+      radius = Math.min(width, height) / 2;
 
-  function drawOnePie(divClass, data) {
-    var width = 400,
-    height = 300,
-    radius = Math.min(width, height) / 2;
+      var arc = d3.svg.arc()
+      .outerRadius(radius-10)
+      .innerRadius(0);
 
-    var arc = d3.svg.arc()
-    .outerRadius(radius-10)
-    .innerRadius(0);
+      var labelArc = d3.svg.arc()
+      .outerRadius(radius - 40)
+      .innerRadius(radius - 40);
 
-    var labelArc = d3.svg.arc()
-    .outerRadius(radius - 40)
-    .innerRadius(radius - 40);
+      var pie = d3.layout.pie()
+      .sort(null)
+      .value(function(d) { return d.count; });
 
-    var pie = d3.layout.pie()
-    .sort(null)
-    .value(function(d) { return d.count; });
+      var svg = d3.select("." + divClass).append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
-    var svg = d3.select("." + divClass).append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+      var header = svg.append("text")
+      .text(beautifyEventType(divClass));
 
-    var header = svg.append("text")
-    .text(beautifyEventType(divClass));
+      header
+      .attr("x", -width/2 + 5)
+      .attr("y", -height/2 + header.node().getBBox().height + 5);
 
-    header
-    .attr("x", -width/2 + 5)
-    .attr("y", -height/2 + header.node().getBBox().height + 5);
+      var g = svg.selectAll(".arc")
+      .data(pie(data))
+      .enter().append("g")
+      .attr("class", "arc");
 
-    var g = svg.selectAll(".arc")
-    .data(pie(data))
-    .enter().append("g")
-    .attr("class", "arc");
+      var piePieceMouseEnter = function() {
+        var text = d3.select(this).attr("hovertext");
+        var x = d3.mouse(this)[0];
+        var y = d3.mouse(this)[1];
 
-    var piePieceMouseEnter = function() {
-      var text = d3.select(this).attr("hovertext");
-      var x = d3.mouse(this)[0];
-      var y = d3.mouse(this)[1];
-
-      var labelGroup = svg.append("g")
+        var labelGroup = svg.append("g")
         .attr("class", "bar-label");
 
-      var labelRect = labelGroup.append("rect")
-      .attr("x", 0)
-      .attr("y", 0);
+        var labelRect = labelGroup.append("rect")
+        .attr("x", 0)
+        .attr("y", 0);
 
-      var labelText = labelGroup.append("text")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("dy", "1em")
-      .text(text);
+        var labelText = labelGroup.append("text")
+        .attr("x", 10)
+        .attr("y", 5)
+        .attr("dy", "1em")
+        .text(text);
 
-      labelRect
-      .attr("height", labelText.node().getBBox().height + 10)
-      .attr("width", labelText.node().getBBox().width + 20);
+        labelRect
+        .attr("height", labelText.node().getBBox().height + 10)
+        .attr("width", labelText.node().getBBox().width + 20);
 
-      var offsetX = x - labelGroup.node().getBBox().width - 5;
-      var offsetY = y - labelGroup.node().getBBox().height - 5;
-      labelGroup.attr("transform", "translate(" + offsetX + "," + offsetY + ")");
-    };
+        var offsetX = x - labelGroup.node().getBBox().width - 5;
+        var offsetY = y - labelGroup.node().getBBox().height - 5;
+        labelGroup.attr("transform", "translate(" + offsetX + "," + offsetY + ")");
+      };
 
-    var piePieceMouseLeave = function() {
-      d3.selectAll(".bar-label").remove();
-    };
+      var piePieceMouseLeave = function() {
+        d3.selectAll(".bar-label").remove();
+      };
 
-    var piePieceMouseMove = function() {
-      var labelGroup = d3.select(".bar-label");
-      var x = d3.mouse(this)[0];
-      var y = d3.mouse(this)[1];
+      var piePieceMouseMove = function() {
+        var labelGroup = d3.select(".bar-label");
+        var x = d3.mouse(this)[0];
+        var y = d3.mouse(this)[1];
 
-      var offsetX = x - labelGroup.node().getBBox().width - 5;
-      var offsetY = y - labelGroup.node().getBBox().height - 5;
-      labelGroup.attr("transform", "translate(" + offsetX + "," + offsetY + ")");
+        var offsetX = x - labelGroup.node().getBBox().width - 5;
+        var offsetY = y - labelGroup.node().getBBox().height - 5;
+        labelGroup.attr("transform", "translate(" + offsetX + "," + offsetY + ")");
+      }
+
+      var piePieces = g.append("path")
+      .attr("d", arc)
+      .attr("class", function(d) { return d.data.state + " pie-piece"; })
+      .attr("hovertext", function(d) { return d.data.state; });
+
+      piePieces
+      .on("mouseenter", piePieceMouseEnter)
+      .on("mouseleave", piePieceMouseLeave)
+      .on("mousemove" , piePieceMouseMove );
+
+      /*var text = g.append("text")
+      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+      .text(function(d) { return d.data.state; });
+
+      text.attr("dx", -(text.node().getComputedTextLength() / 2));*/
     }
-
-    var piePieces = g.append("path")
-    .attr("d", arc)
-    .attr("class", function(d) { return d.data.state + " pie-piece"; })
-    .attr("hovertext", function(d) { return d.data.state; });
-
-    piePieces
-    .on("mouseenter", piePieceMouseEnter)
-    .on("mouseleave", piePieceMouseLeave)
-    .on("mousemove" , piePieceMouseMove );
-
-    /*var text = g.append("text")
-    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-    .text(function(d) { return d.data.state; });
-
-    text.attr("dx", -(text.node().getComputedTextLength() / 2));*/
-  }
-  </script>
-</body>
+    </script>
+  </body>
